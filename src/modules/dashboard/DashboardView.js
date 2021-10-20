@@ -1,4 +1,5 @@
 import React from 'react';
+import { VictoryPie, VictoryLegend } from 'victory-native';
 import {
   StyleSheet,
   View,
@@ -9,7 +10,7 @@ import {
 import { fonts, colors } from '../../styles';
 import { Text } from '../../components/StyledText';
 
-export default function HomeScreen({ isExtended, setIsExtended }) {
+export default function DashboardScreen({ isExtended, setIsExtended }) {
   // const rnsUrl = 'https://reactnativestarter.com';
   // const handleClick = () => {
   //   Linking.canOpenURL(rnsUrl).then(supported => {
@@ -29,44 +30,37 @@ export default function HomeScreen({ isExtended, setIsExtended }) {
         resizeMode="cover"
       >
         <View style={styles.section}>
-          <Text size={20} white>
-            Deez
+          <Text size={30} bold white style={styles.title}>
+            Dashboard
           </Text>
         </View>
         <View style={styles.section}>
-          <Text color="#19e7f7" size={15}>
-            The smartest Way to build your mobile app
-          </Text>
-          <Text size={30} bold white style={styles.title}>
-            React Native Starter
-          </Text>
+          <VictoryPie
+          colorScale={["gold", "cyan", "navy"]}
+          labels={() => null}
+          innerRadius={50}
+            data={[
+              { x: "Food", y: 35 },
+              { x: "Entertainment", y: 40 },
+              { x: "Necessities", y: 55 }
+            ]}
+          />
         </View>
-        <View style={[styles.section, styles.sectionLarge]}>
-          <Text color="#19e7f7" hCenter size={15} style={styles.description}>
-            {' '}
-            A powerful starter project that bootstraps development of your
-            mobile application and saves you $20 000*
-          </Text>
-          <View style={styles.priceContainer}>
-            <View style={{ flexDirection: 'row' }}>
-              <Text white bold size={50} style={styles.price}>
-                {isExtended ? '$499' : '$99'}
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={styles.priceLink}
-              onPress={() =>
-                isExtended ? setIsExtended(false) : setIsExtended(true)
-              }
-            >
-              <Text white size={14}>
-                {isExtended
-                  ? 'Multiple Applications License'
-                  : 'Single Application License'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <View style={styles.section}>
+                  <Text size={20} white style={styles.title}>
+                    Total expenses: $100.00
+                  </Text>
+                  <VictoryLegend x={125} y={50}
+                    orientation="vertical"
+                    gutter={20}
+                    rowGutter={{ top: 0, bottom: 3 }}
+                    data={[
+                        { name: "One", symbol: { fill: "gold" }, labels: { fill: "white" }  },
+                        { name: "Two", symbol: { fill: "cyan" }, labels: { fill: "white" }  },
+                        { name: "Three", symbol: { fill: "navy" }, labels: { fill: "white" }  }
+                      ]}
+                  />
+         </View>
       </ImageBackground>
     </View>
   );

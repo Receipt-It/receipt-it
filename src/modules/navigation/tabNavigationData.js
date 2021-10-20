@@ -1,4 +1,4 @@
-import HomeScreen from '../home/HomeViewContainer';
+import DashboardScreen from '../dashboard/DashboardViewContainer';
 import CalendarScreen from '../calendar/CalendarViewContainer';
 import GridsScreen from '../grids/GridsViewContainer';
 import PagesScreen from '../pages/PagesViewContainer';
@@ -12,27 +12,27 @@ const iconComponents = require('../../../assets/images/tabbar/components.png');
 
 const tabNavigationData = [
   {
-    name: 'Home',
-    component: HomeScreen,
+    name: 'Dashboard',
+    component: DashboardScreen,
     icon: iconHome,
   },
   {
-    name: 'Calendar',
+    name: 'Scanner',
     component: CalendarScreen,
     icon: iconCalendar,
   },
   {
-    name: 'Grids',
+    name: 'Search',
     component: GridsScreen,
     icon: iconGrids,
   },
   {
-    name: 'Pages',
+    name: 'History',
     component: PagesScreen,
     icon: iconPages,
   },
   {
-    name: 'Components',
+    name: 'Starred',
     component: ComponentsScreen,
     icon: iconComponents,
   },
