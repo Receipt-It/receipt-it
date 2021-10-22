@@ -6,11 +6,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { colors } from './src/styles';
 
 import { store, persistor } from './src/redux/store';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import AppView from './src/modules/AppViewContainer';
 
+
 export default function App() {
   return (
+   <SafeAreaProvider>
     <Provider store={store}>
       <NavigationContainer>
         <PersistGate
@@ -26,6 +29,7 @@ export default function App() {
         </PersistGate>
       </NavigationContainer>
     </Provider>
+    </SafeAreaProvider>
   );
 }
 

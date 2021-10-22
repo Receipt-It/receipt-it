@@ -3,6 +3,7 @@ import CalendarScreen from '../calendar/CalendarViewContainer';
 import GridsScreen from '../grids/GridsViewContainer';
 import PagesScreen from '../pages/PagesViewContainer';
 import ComponentsScreen from '../components/ComponentsViewContainer';
+import SearchScreen from '../search/SearchViewContainer';
 
 const iconHome = require('../../../assets/images/tabbar/home.png');
 const iconCalendar = require('../../../assets/images/tabbar/calendar.png');
@@ -23,7 +24,7 @@ const tabNavigationData = [
   },
   {
     name: 'Search',
-    component: GridsScreen,
+    component: SearchScreen,
     icon: iconGrids,
   },
   {
