@@ -11,6 +11,7 @@ import { SearchBar } from 'react-native-elements';
 
 import { fonts, colors } from '../../styles';
 import { Text } from '../../components/StyledText';
+import { Dropdown } from '../../components';
 
 export default class SearchScreen extends React.Component {
   // const rnsUrl = 'https://reactnativestarter.com';
@@ -47,6 +48,12 @@ export default class SearchScreen extends React.Component {
                   onChangeText={this.updateSearch}
                   value={search}
                 />
+                <Dropdown
+                          style={{ width: '100%', alignSelf: 'center' }}
+                          placeholder="Select Category"
+                          onSelect={() => {}}
+                          items={['Groceries', 'Entertainment', 'Transportation']}
+                        />
         <View style={styles.section}>
           <Text color="#19e7f7" size={15}>
             The smartest Way to build your mobile app
