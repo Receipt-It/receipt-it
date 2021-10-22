@@ -30,34 +30,32 @@ export default function DashboardScreen({ isExtended, setIsExtended }) {
         resizeMode="cover"
       >
         <View style={styles.section}>
-          <Text size={30} bold white style={styles.title}>
+          <Text size={30} bold white style={styles.dashboardTitle}>
             Dashboard
           </Text>
-        </View>
-        <View style={styles.section}>
           <VictoryPie
-          colorScale={["gold", "cyan", "navy"]}
-          labels={() => null}
-          innerRadius={50}
-            data={[
-              { x: "Food", y: 35 },
-              { x: "Entertainment", y: 40 },
-              { x: "Necessities", y: 55 }
-            ]}
-          />
+                    colorScale={["gold", "cyan", "navy"]}
+                    labels={() => null}
+                    innerRadius={50}
+                      data={[
+                        { x: "Food", y: 35 },
+                        { x: "Entertainment", y: 40 },
+                        { x: "Necessities", y: 55 }
+                      ]}
+                    />
         </View>
         <View style={styles.section}>
                   <Text size={20} white style={styles.title}>
                     Total expenses: $100.00
                   </Text>
-                  <VictoryLegend x={125} y={50}
+                  <VictoryLegend x={25} y={25}
                     orientation="vertical"
                     gutter={20}
                     rowGutter={{ top: 0, bottom: 3 }}
                     data={[
-                        { name: "One", symbol: { fill: "gold" }, labels: { fill: "white" }  },
-                        { name: "Two", symbol: { fill: "cyan" }, labels: { fill: "white" }  },
-                        { name: "Three", symbol: { fill: "navy" }, labels: { fill: "white" }  }
+                        { name: "Groceries", symbol: { fill: "gold" }, labels: { fill: "white" }  },
+                        { name: "Entertainment", symbol: { fill: "cyan" }, labels: { fill: "white" }  },
+                        { name: "Transportation", symbol: { fill: "navy" }, labels: { fill: "white" }  }
                       ]}
                   />
          </View>
@@ -102,9 +100,15 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primaryRegular,
     fontSize: 15,
   },
+  dashboardTitle: {
+       top: 150,
+     },
   title: {
-    marginTop: 30,
+    marginTop: 150,
   },
+  categories: {
+      left: -100,
+    },
   price: {
     marginBottom: 5,
   },
