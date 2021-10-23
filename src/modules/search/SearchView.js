@@ -4,10 +4,12 @@ import {
   View,
   TouchableOpacity,
   ImageBackground,
-  TextInput
+  TextInput,
+  Image
 } from 'react-native';
+import Lightbox from 'react-native-lightbox';
 
-import { SearchBar } from 'react-native-elements';
+import { Card, ListItem, Button, Icon, SearchBar } from 'react-native-elements';
 
 import { fonts, colors } from '../../styles';
 import { Text } from '../../components/StyledText';
@@ -48,19 +50,32 @@ export default class SearchScreen extends React.Component {
                   onChangeText={this.updateSearch}
                   value={search}
                 />
+                <Text style={styles.dropdown}>
+                Category:
+                </Text>
                 <Dropdown
                           style={{ width: '100%', alignSelf: 'center' }}
                           placeholder="Select Category"
+                          color="black"
+                          borderColor="black"
                           onSelect={() => {}}
                           items={['Groceries', 'Entertainment', 'Transportation']}
                         />
-        <View style={styles.section}>
-          <Text color="#19e7f7" size={15}>
-            The smartest Way to build your mobile app
-          </Text>
-          <Text size={30} bold white style={styles.title}>
-            React Native Starter
-          </Text>
+        <View style={styles.sectionLarge}>
+          <Card>
+            <Card.Title>8/11/2021 Trader Joes</Card.Title>
+            <Card.Divider/>
+            <View style={styles.rowContainer}>
+            <Image style={styles.image} source={require('../../../assets/images/TestReceipt.jpg')} />
+            <Text>
+            No description
+            </Text>
+            </View>
+            <Card.Divider/>
+            <Text>
+            Groceries
+            </Text>
+          </Card>
         </View>
     </View>
   );
@@ -119,5 +134,18 @@ const styles = StyleSheet.create({
       margin: 12,
       borderWidth: 1,
       padding: 10,
+    },
+  image: {
+      height: 100,
+      width: 100,
+      marginBottom: 5,
+      marginRight: 5,
+    },
+  rowContainer: {
+      flexDirection: 'row'
+  },
+  dropdown: {
+        marginTop: 5,
+        marginBottom: 5,
     },
 });
