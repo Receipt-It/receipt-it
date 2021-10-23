@@ -1,4 +1,5 @@
 import React from 'react';
+import DatePicker from 'react-native-datepicker';
 import {
   StyleSheet,
   View,
@@ -34,6 +35,11 @@ export default class SearchScreen extends React.Component {
       this.setState({ search });
     };
 
+    constructor(props){
+        super(props)
+        this.state = {date:"2016-05-15"}
+      }
+
   render() {
   const { search } = this.state;
 
@@ -50,17 +56,51 @@ export default class SearchScreen extends React.Component {
                   onChangeText={this.updateSearch}
                   value={search}
                 />
+                <View style={styles.rowContainer}>
                 <Text style={styles.dropdown}>
                 Category:
                 </Text>
+                <Text style={styles.dropdown}>
+                Date:
+                </Text>
+                </View>
+                <View style={styles.rowContainer}>
                 <Dropdown
-                          style={{ width: '100%', alignSelf: 'center' }}
+                          style={{ alignSelf: 'center', backgroundColor: 'white', marginRight: 35 }}
                           placeholder="Select Category"
                           color="black"
                           borderColor="black"
                           onSelect={() => {}}
                           items={['Groceries', 'Entertainment', 'Transportation']}
                         />
+                <DatePicker
+                        style={{width: 200}}
+                        date={this.state.date}
+                        mode="date"
+                        placeholder="select date"
+                        format="YYYY-MM-DD"
+                        minDate="2016-05-01"
+                        maxDate="2016-06-01"
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        customStyles={{
+                          dateIcon: {
+                            position: 'absolute',
+                            left: 0,
+                            top: 4,
+                            marginLeft: 0
+                          },
+                          dateInput: {
+                            marginLeft: 36,
+                            backgroundColor: 'white',
+                            borderColor: "black",
+                            borderRadius: 5
+                          }
+                          // ... You can check the source to find the other keys.
+                        }}
+                        onDateChange={(date) => {this.setState({date: date})}}
+                      />
+                      </View>
         <View style={styles.sectionLarge}>
           <Card>
             <Card.Title>8/11/2021 Trader Joes</Card.Title>
@@ -145,6 +185,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row'
   },
   dropdown: {
+        flex: 1,
         marginTop: 5,
         marginBottom: 5,
     },
