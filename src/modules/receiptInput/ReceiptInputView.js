@@ -1,69 +1,75 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, View, TextInput, Button,  StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function ReceiptInputScreen() {
 
-  const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
+  const { handleSubmit, control, reset, formState: { errors } } = useForm({
     defaultValues: {
-      firstName: '',
-      lastName: ''
+      companyName: "",
+      date: new Date(),
+      description: ""
     }
   });
+
   const onSubmit = data => {
     console.log(data);
   };
 
-  const onChange = arg => ({
-      value: arg.nativeEvent.text,
-    });
+  const [show, setShow] = useState(false);
 
   console.log('errors', errors);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>First name</Text>
+      <Text style={styles.label}>Company Name</Text>
       <Controller
         control={control}
         render={({field: { onChange, onBlur, value }}) => (
           <TextInput
             style={styles.input}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={input => onChange(input)}
             value={value}
           />
         )}
-        name="firstName"
+        name="companyName"
         rules={{ required: true }}
       />
-      <Text style={styles.label}>Last name</Text>
+      <Text style={styles.label}>Date</Text>
+      <Button onPress={() => setShow(!show)} title="Choose date" />
+      <Controller
+        control={control}
+        render={({field: { onChange, value }}) => (
+          show && (
+          <DateTimePicker 
+            value={value}
+            mode="date"
+            onChange={(event, newDate) => {
+              setShow(!show);
+              onChange(newDate);
+            }}
+          />
+)
+        )}
+        name="date"
+        rules={{ required: true }}
+      />
+      <Text style={styles.label}>Description</Text>
       <Controller
         control={control}
         render={({field: { onChange, onBlur, value }}) => (
           <TextInput
             style={styles.input}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={input => onChange(input)}
             value={value}
           />
         )}
-        name="lastName"
+        name="description"
         rules={{ required: true }}
       />
-
-      <View style={styles.button}>
-        <Button
-          style={styles.buttonInner}
-          color
-          title="Reset"
-          onPress={() => {
-            reset({
-              firstName: 'Bill',
-              lastName: 'Luo'
-            })
-          }}
-        />
-      </View>
 
       <View style={styles.button}>
         <Button
