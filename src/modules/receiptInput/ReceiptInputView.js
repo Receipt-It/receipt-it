@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, View, ScrollView, TextInput, Button,  StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -9,16 +12,36 @@ export default function ReceiptInputScreen() {
   const { handleSubmit, control, reset, getValues, formState: { errors } } = useForm({
     defaultValues: {
       companyName: "",
-      totalExpenses: 0,
+      totalExpenses: "",
       date: new Date(),
       description: "",
       category: 'grocery'
     }
   });
 
-  const onSubmit = data => {
+  const onSubmit = async data => {
     console.log(data);
+    try {
+      const dataJson = JSON.stringify(data);
+      await AsyncStorage.setItem(uuidv4(), dataJson);
+    } catch(e) {
+      console.log(e);
+    }
   };
+
+  const printAllKeys = async () => {
+    let keys = [];
+    try {
+      keys = await AsyncStorage.getAllKeys();
+    } catch (e) {
+      console.log(e);
+    }
+
+    keys.map(async (key, index) => {
+
+      if (index !== (keys.length-1)) console.log(await AsyncStorage.getItem(key));
+    });
+  }
 
   // calendar show
   const [show, setShow] = useState(false);
@@ -126,6 +149,14 @@ export default function ReceiptInputScreen() {
           color
           title="Submit"
           onPress={handleSubmit(onSubmit)}
+        />
+      </View>
+      <View style={styles.button}>
+        <Button
+          style={styles.buttonInner}
+          color
+          title="Print storage"
+          onPress={printAllKeys}
         />
       </View>
     </ScrollView>
