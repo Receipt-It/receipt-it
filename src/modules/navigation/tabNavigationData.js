@@ -1,5 +1,5 @@
 import DashboardScreen from '../dashboard/DashboardViewContainer';
-import CalendarScreen from '../calendar/CalendarViewContainer';
+import ReceiptInputScreen from '../receiptInput/ReceiptInputView';
 import GridsScreen from '../grids/GridsViewContainer';
 import PagesScreen from '../pages/PagesViewContainer';
 import ComponentsScreen from '../components/ComponentsViewContainer';
@@ -18,7 +18,7 @@ const tabNavigationData = [
   },
   {
     name: 'Scanner',
-    component: CalendarScreen,
+    component: ReceiptInputScreen,
     icon: iconCalendar,
   },
   {

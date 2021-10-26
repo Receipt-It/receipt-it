@@ -36,9 +36,9 @@ export default function DashboardScreen({ isExtended, setIsExtended }) {
         </View>
         <View style={styles.section}>
           <VictoryPie
-          colorScale={["gold", "cyan", "navy"]}
-          labels={() => null}
-          innerRadius={50}
+            colorScale={["gold", "cyan", "navy"]}
+            labels={() => null}
+            innerRadius={50}
             data={[
               { x: "Food", y: 35 },
               { x: "Entertainment", y: 40 },
@@ -47,20 +47,22 @@ export default function DashboardScreen({ isExtended, setIsExtended }) {
           />
         </View>
         <View style={styles.section}>
-                  <Text size={20} white style={styles.title}>
-                    Total expenses: $100.00
-                  </Text>
-                  <VictoryLegend x={125} y={50}
-                    orientation="vertical"
-                    gutter={20}
-                    rowGutter={{ top: 0, bottom: 3 }}
-                    data={[
+          <Text size={20} white style={styles.title}>
+            Total expenses: $100.00
+          </Text>
+          <VictoryLegend
+            x={125}
+            y={50}
+            orientation="vertical"
+            gutter={20}
+            rowGutter={{ top: 0, bottom: 3 }}
+            data={[
                         { name: "One", symbol: { fill: "gold" }, labels: { fill: "white" }  },
                         { name: "Two", symbol: { fill: "cyan" }, labels: { fill: "white" }  },
                         { name: "Three", symbol: { fill: "navy" }, labels: { fill: "white" }  }
                       ]}
-                  />
-         </View>
+          />
+        </View>
       </ImageBackground>
     </View>
   );
