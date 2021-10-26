@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   ImageBackground,
   TextInput,
-  Image
+  Image,
+  ScrollView
 } from 'react-native';
 import Lightbox from 'react-native-lightbox';
 
@@ -44,6 +45,10 @@ export default class SearchScreen extends React.Component {
   const { search } = this.state;
 
   return (
+  <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ paddingBottom: 20 }}
+      >
     <View style={styles.container}>
            <SearchBar
                    inputStyle={{backgroundColor: 'white'}}
@@ -74,7 +79,7 @@ export default class SearchScreen extends React.Component {
                           items={['Groceries', 'Entertainment', 'Transportation']}
                         />
                 <DatePicker
-                        style={{width: 200}}
+                        style={{width: '50%'}}
                         date={this.state.date}
                         mode="date"
                         placeholder="select date"
@@ -118,6 +123,7 @@ export default class SearchScreen extends React.Component {
           </Card>
         </View>
     </View>
+    </ScrollView>
   );
   }
 }

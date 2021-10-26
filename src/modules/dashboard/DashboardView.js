@@ -24,13 +24,8 @@ export default function DashboardScreen({ isExtended, setIsExtended }) {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={require('../../../assets/images/background.png')}
-        style={styles.bgImage}
-        resizeMode="cover"
-      >
         <View style={styles.section}>
-          <Text size={30} bold white style={styles.dashboardTitle}>
+          <Text size={30} bold black style={styles.dashboardTitle}>
             Dashboard
           </Text>
           <VictoryPie
@@ -44,8 +39,8 @@ export default function DashboardScreen({ isExtended, setIsExtended }) {
                       ]}
                     />
         </View>
-        <View style={styles.section}>
-                  <Text size={20} white style={styles.title}>
+        <View style={styles.description}>
+                  <Text size={20} style={styles.title}>
                     Total expenses: $100.00
                   </Text>
                   <VictoryLegend x={25} y={25}
@@ -53,13 +48,12 @@ export default function DashboardScreen({ isExtended, setIsExtended }) {
                     gutter={20}
                     rowGutter={{ top: 0, bottom: 3 }}
                     data={[
-                        { name: "Groceries", symbol: { fill: "gold" }, labels: { fill: "white" }  },
-                        { name: "Entertainment", symbol: { fill: "cyan" }, labels: { fill: "white" }  },
-                        { name: "Transportation", symbol: { fill: "navy" }, labels: { fill: "white" }  }
+                        { name: "Groceries", symbol: { fill: "gold" }, labels: { fill: "black" }  },
+                        { name: "Entertainment", symbol: { fill: "cyan" }, labels: { fill: "black" }  },
+                        { name: "Transportation", symbol: { fill: "navy" }, labels: { fill: "black" }  }
                       ]}
                   />
          </View>
-      </ImageBackground>
     </View>
   );
 }
@@ -67,8 +61,10 @@ export default function DashboardScreen({ isExtended, setIsExtended }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-around',
+    backgroundColor: colors.bluish,
+    paddingHorizontal: 15,
+    paddingTop: 20,
+    flexDirection: "column",
   },
   bgImage: {
     flex: 1,
@@ -91,11 +87,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   description: {
-    padding: 15,
-    lineHeight: 25,
+    flex: 1,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.white,
+    marginTop: 60,
+    borderRadius: 5,
   },
   titleDescription: {
-    color: '#19e7f7',
     textAlign: 'center',
     fontFamily: fonts.primaryRegular,
     fontSize: 15,
@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
      },
   title: {
     marginTop: 150,
+    color: 'black',
   },
   categories: {
       left: -100,

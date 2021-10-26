@@ -16,6 +16,8 @@ target 'ReactNativeStarter' do
 
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
+  pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
+
   target 'ReactNativeStarterTests' do
     inherit! :search_paths
     # Pods for testing
