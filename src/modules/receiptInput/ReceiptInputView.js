@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import RNFS from 'react-native-fs';
 import { Text, View, ScrollView, TextInput, Button,  StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -21,12 +22,25 @@ export default function ReceiptInputScreen() {
 
   const onSubmit = async data => {
     console.log(data);
+    const dataJson = JSON.stringify(data);
+
     try {
-      const dataJson = JSON.stringify(data);
       await AsyncStorage.setItem(uuidv4(), dataJson);
     } catch(e) {
       console.log(e);
     }
+
+    const path = `${RNFS.ExternalDirectoryPath}/test.txt`;
+
+    console.log(path);
+
+    RNFS.writeFile(path, dataJson, 'utf8')
+      .then((success) => {
+        console.log('FILE WRITTEN!');
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   const printAllKeys = async () => {
