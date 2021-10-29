@@ -1,7 +1,6 @@
 import DashboardScreen from '../dashboard/DashboardViewContainer';
-import ReceiptInputScreen from '../receiptInput/ReceiptInputView';
-import GridsScreen from '../grids/GridsViewContainer';
-import PagesScreen from '../pages/PagesViewContainer';
+import ReceiptInputScreen from '../receiptInput/ReceiptInputViewContainer';
+import ReceiptHistoryScreen from '../receiptHistory/ReceiptHistoryViewContainer';
 import ComponentsScreen from '../components/ComponentsViewContainer';
 import SearchScreen from '../search/SearchViewContainer';
 
@@ -29,7 +28,7 @@ const tabNavigationData = [
   },
   {
     name: 'History',
-    component: PagesScreen,
+    component: ReceiptHistoryScreen,
     icon: iconPages,
   },
   {
