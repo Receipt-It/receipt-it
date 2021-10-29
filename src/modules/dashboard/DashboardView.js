@@ -48,9 +48,9 @@ export default function DashboardScreen({ isExtended, setIsExtended }) {
                     gutter={20}
                     rowGutter={{ top: 0, bottom: 3 }}
                     data={[
-                        { name: "Groceries", symbol: { fill: "gold" }, labels: { fill: "black" }  },
-                        { name: "Entertainment", symbol: { fill: "cyan" }, labels: { fill: "black" }  },
-                        { name: "Transportation", symbol: { fill: "navy" }, labels: { fill: "black" }  }
+                        { name: "Groceries $35", symbol: { fill: "gold" }, labels: { fill: "black" }  },
+                        { name: "Entertainment $40", symbol: { fill: "cyan" }, labels: { fill: "black" }  },
+                        { name: "Transportation $55", symbol: { fill: "navy" }, labels: { fill: "black" }  }
                       ]}
                   />
          </View>

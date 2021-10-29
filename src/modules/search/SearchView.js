@@ -9,6 +9,8 @@ import {
   Image,
   ScrollView
 } from 'react-native';
+import { useForm, Controller } from "react-hook-form";
+import { Picker } from '@react-native-picker/picker';
 import Lightbox from 'react-native-lightbox';
 
 import { Card, ListItem, Button, Icon, SearchBar } from 'react-native-elements';
@@ -18,18 +20,10 @@ import { Text } from '../../components/StyledText';
 import { Dropdown } from '../../components';
 
 export default class SearchScreen extends React.Component {
-  // const rnsUrl = 'https://reactnativestarter.com';
-  // const handleClick = () => {
-  //   Linking.canOpenURL(rnsUrl).then(supported => {
-  //     if (supported) {
-  //       Linking.openURL(rnsUrl);
-  //     } else {
-  //       console.log(`Don't know how to open URI: ${rnsUrl}`);
-  //     }
-  //   });
-  // };
+
    state = {
       search: '',
+      value: '',
     };
 
     updateSearch = (search) => {
@@ -70,16 +64,17 @@ export default class SearchScreen extends React.Component {
                 </Text>
                 </View>
                 <View style={styles.rowContainer}>
-                <Dropdown
-                          style={{ alignSelf: 'center', backgroundColor: 'white', marginRight: 35 }}
-                          placeholder="Select Category"
-                          color="black"
-                          borderColor="black"
-                          onSelect={() => {}}
-                          items={['Groceries', 'Entertainment', 'Transportation']}
-                        />
+                            <Picker
+                              style={styles.picker}
+                              selectedValue={this.state.value}
+                              onValueChange={(itemValue, itemIndex) => onChange(itemValue)}
+                            >
+                              {
+                                dropdownItems.map(item => <Picker.Item key={item.key} label={item.label} value={item.value} />)
+                              }
+                            </Picker>
                 <DatePicker
-                        style={{width: '50%'}}
+                        style={{width: '50%', height: '50%'}}
                         date={this.state.date}
                         mode="date"
                         placeholder="select date"
@@ -101,7 +96,6 @@ export default class SearchScreen extends React.Component {
                             borderColor: "black",
                             borderRadius: 5
                           }
-                          // ... You can check the source to find the other keys.
                         }}
                         onDateChange={(date) => {this.setState({date: date})}}
                       />
@@ -113,7 +107,7 @@ export default class SearchScreen extends React.Component {
             <View style={styles.rowContainer}>
             <Image style={styles.image} source={require('../../../assets/images/TestReceipt.jpg')} />
             <Text>
-            No description
+            $100 No description
             </Text>
             </View>
             <Card.Divider/>
@@ -127,6 +121,12 @@ export default class SearchScreen extends React.Component {
   );
   }
 }
+
+const dropdownItems = [
+  {key: 1, label: 'Groceries', value: 'groceries'},
+  {key: 2, label: 'Entertainment', value: 'entertainment'},
+  {key: 3, label: 'Transportation', value: 'transportation'},
+]
 
 const styles = StyleSheet.create({
   container: {
@@ -167,6 +167,12 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 30,
+  },
+  picker: {
+      backgroundColor: 'white',
+      borderColor: 'black',
+      width:'50%',
+      borderWidth: 0.5,
   },
   price: {
     marginBottom: 5,

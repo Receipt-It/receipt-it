@@ -18,6 +18,8 @@ target 'ReactNativeStarter' do
 
   pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   target 'ReactNativeStarterTests' do
     inherit! :search_paths
     # Pods for testing
