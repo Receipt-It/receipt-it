@@ -18,8 +18,31 @@ import { Card, ListItem, Button, Icon, SearchBar } from 'react-native-elements';
 import { fonts, colors } from '../../styles';
 import { Text } from '../../components/StyledText';
 import { Dropdown } from '../../components';
+import * as RNFS from 'react-native-fs';
 
 export default class SearchScreen extends React.Component {
+
+   constructor(props) {
+    super(props);
+    this.state = {
+      content: null,
+      fruitType: null,
+      date: "2016-05-15"
+    };
+  }
+
+  readFile = () => {
+      RNFS.readFile('/storage/emulated/0/DATA/data.json', 'ascii')
+        .then((res) => {
+          console.log(res);
+          const d = JSON.parse(res);
+          this.setState({ content: res, fruitType: d.type });
+        })
+        .catch((err) => {
+          console.log(err.message, err.code);
+        });
+    };
+
 
    state = {
       search: '',
@@ -29,11 +52,6 @@ export default class SearchScreen extends React.Component {
     updateSearch = (search) => {
       this.setState({ search });
     };
-
-    constructor(props){
-        super(props)
-        this.state = {date:"2016-05-15"}
-      }
 
   render() {
   const { search } = this.state;
@@ -78,7 +96,7 @@ export default class SearchScreen extends React.Component {
                 </View>
                 <View style={styles.rowContainer}>
                 <DatePicker
-                style={{width: '100%', height: '50%'}}
+                style={{width: '50%', height: '50%'}}
                         date={this.state.date}
                         mode="date"
                         placeholder="select date"
@@ -103,6 +121,11 @@ export default class SearchScreen extends React.Component {
                         }}
                         onDateChange={(date) => {this.setState({date: date})}}
                       />
+                      <Button style={[styles.button, {flexBasis: '47%'}]}
+                              primary
+                              rounded
+                              title="Search"
+                              onPress={() => this.readFile()} />
                       </View>
         <View style={styles.sectionLarge}>
           <Card>
@@ -144,6 +167,10 @@ const styles = StyleSheet.create({
   bgImage: {
     flex: 1,
     marginHorizontal: -20,
+  },
+  button: {
+    marginTop: 8,
+    marginBottom: 8,
   },
   section: {
     flex: 1,
