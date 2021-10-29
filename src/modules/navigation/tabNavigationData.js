@@ -1,8 +1,7 @@
 import DashboardScreen from '../dashboard/DashboardViewContainer';
-import ReceiptInputScreen from '../receiptInput/ReceiptInputView';
-import GridsScreen from '../grids/GridsViewContainer';
-import PagesScreen from '../pages/PagesViewContainer';
-import ComponentsScreen from '../components/ComponentsViewContainer';
+import ReceiptInputScreen from '../receiptInput/ReceiptInputViewContainer';
+import ReceiptHistoryScreen from '../receiptHistory/ReceiptHistoryViewContainer';
+import GalleryScreen from '../gallery/GalleryViewContainer';
 import SearchScreen from '../search/SearchViewContainer';
 
 const iconHome = require('../../../assets/images/tabbar/home.png');
@@ -29,12 +28,12 @@ const tabNavigationData = [
   },
   {
     name: 'History',
-    component: PagesScreen,
+    component: ReceiptHistoryScreen,
     icon: iconPages,
   },
   {
     name: 'Starred',
-    component: ComponentsScreen,
+    component: GalleryScreen,
     icon: iconComponents,
   },
 ];
