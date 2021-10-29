@@ -120,14 +120,11 @@ export function refreshImages() {
 export default function GalleryStateReducer(state = initialState, action = {}) {
   switch (action.type) {
     case START_IMAGES_LOADING:
-      console.log('STARTING TO LOAD');
-
       return Object.assign({}, state, {
         isLoading: true,
       });
     case IMAGES_LOADED:
-      console.log('FINISHED LOADING');
-      console.log(action);
+
       return Object.assign({}, state, {
         isLoading: false,
         images: action.images,

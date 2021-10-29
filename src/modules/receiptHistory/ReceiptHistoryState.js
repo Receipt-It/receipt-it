@@ -13,8 +13,6 @@ function startReceiptLoading() {
 }
 
 function receiptLoaded(receipts) {
-  console.log('-------RECEIPT LOADED--------');
-  console.log(receipts);
   return {
     type: RECEIPT_LOADED,
     receipts,
@@ -34,8 +32,6 @@ export function loadReceipts() {
     return readDataFile()
     .then((currentData) => {
       const dataJson = JSON.parse(currentData);
-      console.log('----PARSED DATA----')
-      console.log(dataJson);
   
       dispatch(startReceiptLoading());
       dispatch(receiptLoaded(dataJson));
@@ -52,13 +48,10 @@ export function loadReceipts() {
 export default function ReceiptHistoryStateReducer(state = initialState, action = {}) {
   switch(action.type) {
     case START_LOADING:
-      console.log('STARTING TO LOAD');
       return Object.assign({}, state, {
         isLoading: true,
       });
     case RECEIPT_LOADED:
-      console.log('FINISHED LOADING');
-      console.log(action);
       return Object.assign({}, state, {
         isLoading: false,
         receipts: action.receipts,
