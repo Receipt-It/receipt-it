@@ -56,25 +56,29 @@ export default class SearchScreen extends React.Component {
                   value={search}
                 />
                 <View style={styles.rowContainer}>
-                <Text style={styles.dropdown}>
+                <Text>
                 Category:
                 </Text>
-                <Text style={styles.dropdown}>
+                </View>
+                <View style={styles.rowContainer}>
+                                            <Picker
+                                              style={styles.picker}
+                                              selectedValue={this.state.value}
+                                              onValueChange={(itemValue, itemIndex) => onChange(itemValue)}
+                                            >
+                                              {
+                                                dropdownItems.map(item => <Picker.Item key={item.key} label={item.label} value={item.value} />)
+                                              }
+                                            </Picker>
+                </View>
+                <View style={styles.rowContainer}>
+                <Text>
                 Date:
                 </Text>
                 </View>
                 <View style={styles.rowContainer}>
-                            <Picker
-                              style={styles.picker}
-                              selectedValue={this.state.value}
-                              onValueChange={(itemValue, itemIndex) => onChange(itemValue)}
-                            >
-                              {
-                                dropdownItems.map(item => <Picker.Item key={item.key} label={item.label} value={item.value} />)
-                              }
-                            </Picker>
                 <DatePicker
-                        style={{width: '50%', height: '50%'}}
+                style={{width: '100%', height: '50%'}}
                         date={this.state.date}
                         mode="date"
                         placeholder="select date"
@@ -102,12 +106,14 @@ export default class SearchScreen extends React.Component {
                       </View>
         <View style={styles.sectionLarge}>
           <Card>
-            <Card.Title>8/11/2021 Trader Joes</Card.Title>
+            <Card.Title>4/27/2019 Target</Card.Title>
             <Card.Divider/>
             <View style={styles.rowContainer}>
+            <Lightbox activeProps={{width: '100%', height: '100%'}}>
             <Image style={styles.image} source={require('../../../assets/images/TestReceipt.jpg')} />
+            </Lightbox>
             <Text>
-            $100 No description
+            $50 No description
             </Text>
             </View>
             <Card.Divider/>
@@ -171,7 +177,7 @@ const styles = StyleSheet.create({
   picker: {
       backgroundColor: 'white',
       borderColor: 'black',
-      width:'50%',
+      width:'100%',
       borderWidth: 0.5,
   },
   price: {
