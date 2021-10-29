@@ -6,7 +6,7 @@ import { loadImages, refreshImages } from './GalleryState';
 
 export default compose(
   connect(
-    state => ({
+      state => ({
       isLoading: state.gallery.isLoading,
       images: state.gallery.images,
     }),
