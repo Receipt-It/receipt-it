@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNFS from 'react-native-fs';
 import { Text, View, ScrollView, TextInput, Button,  StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
@@ -20,47 +19,29 @@ export default function ReceiptInputScreen() {
     }
   });
 
-  const onSubmit = async data => {
-    console.log(data);
-    const dataJson = JSON.stringify(data);
+  const onSubmit = async data => {    
+    const newId = uuidv4();
 
-    try {
-      await AsyncStorage.setItem(uuidv4(), dataJson);
-    } catch(e) {
-      console.log(e);
-    }
+    // try to read the current data file
+    RNFS.readFile(path, 'utf8')
+      // add the new data 
+      .then((currentData) => {
+        const parsedData = JSON.parse(currentData);
+        parsedData[newId] = data;
 
-    const path = `${RNFS.ExternalDirectoryPath}/test.txt`;
-
-    console.log(path);
-
-    RNFS.writeFile(path, dataJson, 'utf8')
-      .then((success) => {
-        console.log('FILE WRITTEN!');
+        RNFS.writeFile(path, JSON.stringify(parsedData), 'utf8');
       })
-      .catch((err) => {
-        console.log(err.message);
-      });
+      // if file does not exist then write the first entry
+      .catch(() => {
+
+        const dataJson = { [newId]: data };
+        RNFS.writeFile(path, JSON.stringify(dataJson), 'utf8');
+      })
+
   };
-
-  const printAllKeys = async () => {
-    let keys = [];
-    try {
-      keys = await AsyncStorage.getAllKeys();
-    } catch (e) {
-      console.log(e);
-    }
-
-    keys.map(async (key, index) => {
-
-      if (index !== (keys.length-1)) console.log(await AsyncStorage.getItem(key));
-    });
-  }
 
   // calendar show
   const [show, setShow] = useState(false);
-
-  console.log('errors', errors);
 
   return (
     <ScrollView style={styles.container}>
@@ -165,17 +146,11 @@ export default function ReceiptInputScreen() {
           onPress={handleSubmit(onSubmit)}
         />
       </View>
-      <View style={styles.button}>
-        <Button
-          style={styles.buttonInner}
-          color
-          title="Print storage"
-          onPress={printAllKeys}
-        />
-      </View>
     </ScrollView>
   );
 };
+
+const path = `${RNFS.ExternalDirectoryPath}/data.txt`;
 
 const dropdownItems = [
   {key: 1, label: 'Grocery', value: 'grocery'},
