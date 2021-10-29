@@ -124,6 +124,7 @@ export default function GalleryStateReducer(state = initialState, action = {}) {
         isLoading: true,
       });
     case IMAGES_LOADED:
+
       return Object.assign({}, state, {
         isLoading: false,
         images: action.images,
