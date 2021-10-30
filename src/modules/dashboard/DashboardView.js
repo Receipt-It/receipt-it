@@ -41,7 +41,6 @@ export default function DashboardScreen(props) {
   }
 
   return (
-    <ScrollView>
     <View style={styles.container}>
         <View style={styles.section}>
           <Text size={30} bold black style={styles.dashboardTitle}>
@@ -54,7 +53,7 @@ export default function DashboardScreen(props) {
                       data={[
                         { x: Grocery[0], y: Grocery[1] },
                         { x: Food[0], y: Food[1] },
-                        { x: Clothes[0], y: Food[1] }
+                        { x: Clothes[0], y: Clothes[1] }
                       ]}
                     />
         </View>
@@ -74,21 +73,6 @@ export default function DashboardScreen(props) {
                   />
          </View>
     </View>
-    <View>
-          {
-            Object.entries(props.receipts).map(([key, value]) => {
-              const date = new Date(value.date);
-              return (
-                <Card key={key}>
-                  <Card.Title>{date.toDateString()} {value.companyName}</Card.Title>
-                  <Card.Divider />
-                  <Text>{value.totalExpenses}</Text>
-                </Card>
-              );
-            })
-          }
-        </View>
-    </ScrollView>
   );
 }
 
