@@ -36,37 +36,40 @@ export default function SearchScreen(props) {
     defaultValues: {
       search: "",
       date: new Date(),
-      category: 'none'
+      category: "none"
     }
   });
 
   const [show, setShow] = useState(false);
 
   const onSubmit = async data => {
-      setSearch(data.search);
-      setDate(data.date);
+      if (data.search !== '') {
+        setSearch(data.search);
+      }
+      if (data.date !== '') {
+        setDate(data.date);
+      }
       setCategory(data.category);
       //console.log(search);
-      //console.log(date);
-      //console.log(category);
+      console.log(data.date);
+      console.log(data.category);
     };
 
   React.useEffect(() => {
     let filteredResults = Object.values(props.receipts);
     console.log(filteredResults);
-    if (search !== "") {
-            filteredResults = filteredResults.filter(result => result.companyName === search)
-            console.log(search);
-            console.log(category);
-    }
     if (date !== "") {
-            filteredResults = filteredResults.filter(result => dayjs(result.date).format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY'))
-            console.log(dayjs(date).format('DD/MM/YYYY'));
+                filteredResults = filteredResults.filter(result => dayjs(result.date).format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY'))
+                console.log(dayjs(date).format('DD/MM/YYYY'));
+        }
+    if (search != "") {
+            filteredResults = filteredResults.filter(result => result.companyName.includes(search))
+            //console.log(search);
     }
-    if (category !== "none") {
+    if (category != "none") {
                 filteredResults = filteredResults.filter(result => result.category === category)
+                console.log('date');
                 console.log(category);
-                console.log(filteredResults);
     }
     console.log(filteredResults);
     setSearchResults(filteredResults);
@@ -169,7 +172,7 @@ export default function SearchScreen(props) {
 }
 
 const dropdownItems = [
-  {key: 1, label: 'Grocery', value: 'grocery'},
+    {key: 1, label: 'Grocery', value: 'grocery'},
     {key: 2, label: 'Food', value: 'food'},
     {key: 3, label: 'Clothes', value: 'clothes'},
     {key: 4, label: 'None', value: 'none'},
