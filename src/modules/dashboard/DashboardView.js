@@ -1,28 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { VictoryPie, VictoryLegend } from 'victory-native';
 import {
   StyleSheet,
   View,
   TouchableOpacity,
   ImageBackground,
+  ScrollView,
 } from 'react-native';
 
+import { Card } from 'react-native-elements';
 import { fonts, colors } from '../../styles';
 import { Text } from '../../components/StyledText';
 
-export default function DashboardScreen({ isExtended, setIsExtended }) {
-  // const rnsUrl = 'https://reactnativestarter.com';
-  // const handleClick = () => {
-  //   Linking.canOpenURL(rnsUrl).then(supported => {
-  //     if (supported) {
-  //       Linking.openURL(rnsUrl);
-  //     } else {
-  //       console.log(`Don't know how to open URI: ${rnsUrl}`);
-  //     }
-  //   });
-  // };
+export default function DashboardScreen(props) {
+
+  const [Grocery, setGrocery] = useState(["Grocery", determineTotal(Object.values(props.receipts), "grocery")]);
+
+  const [Food, setFood] = useState(["Food", determineTotal(Object.values(props.receipts), "food")]);
+
+  const [Clothes, setClothes] = useState(["Clothes", determineTotal(Object.values(props.receipts), "clothes")]);
+
+  const [TotalExpenses, setTotalExpenses] = useState(determineTotalCost(Object.values(props.receipts)));
+
+  function determineTotal(data, category) {
+    let total = 0;
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].category === category) {
+            total += parseInt(data[i].totalExpenses);
+        }
+    }
+    return total;
+  }
+
+  function determineTotalCost(data) {
+    let total = 0;
+    for (let i = 0; i < data.length; i++) {
+        total += parseInt(data[i].totalExpenses);
+    }
+    return total;
+  }
 
   return (
+    <ScrollView>
     <View style={styles.container}>
         <View style={styles.section}>
           <Text size={30} bold black style={styles.dashboardTitle}>
@@ -33,28 +52,43 @@ export default function DashboardScreen({ isExtended, setIsExtended }) {
                     labels={() => null}
                     innerRadius={50}
                       data={[
-                        { x: "Food", y: 35 },
-                        { x: "Entertainment", y: 40 },
-                        { x: "Necessities", y: 55 }
+                        { x: Grocery[0], y: Grocery[1] },
+                        { x: Food[0], y: Food[1] },
+                        { x: Clothes[0], y: Food[1] }
                       ]}
                     />
         </View>
         <View style={styles.description}>
                   <Text size={20} style={styles.title}>
-                    Total expenses: $100.00
+                    Total Expenses: ${TotalExpenses}
                   </Text>
                   <VictoryLegend x={25} y={25}
                     orientation="vertical"
                     gutter={20}
                     rowGutter={{ top: 0, bottom: 3 }}
                     data={[
-                        { name: "Groceries $35", symbol: { fill: "gold" }, labels: { fill: "black" }  },
-                        { name: "Entertainment $40", symbol: { fill: "cyan" }, labels: { fill: "black" }  },
-                        { name: "Transportation $55", symbol: { fill: "navy" }, labels: { fill: "black" }  }
+                        { name: `${Grocery[0]} $${Grocery[1]}`, symbol: { fill: "gold" }, labels: { fill: "black" }  },
+                        { name: `${Food[0]} $${Food[1]}`, symbol: { fill: "cyan" }, labels: { fill: "black" }  },
+                        { name: `${Clothes[0]} $${Clothes[1]}`, symbol: { fill: "navy" }, labels: { fill: "black" }  }
                       ]}
                   />
          </View>
     </View>
+    <View>
+          {
+            Object.entries(props.receipts).map(([key, value]) => {
+              const date = new Date(value.date);
+              return (
+                <Card key={key}>
+                  <Card.Title>{date.toDateString()} {value.companyName}</Card.Title>
+                  <Card.Divider />
+                  <Text>{value.totalExpenses}</Text>
+                </Card>
+              );
+            })
+          }
+        </View>
+    </ScrollView>
   );
 }
 
