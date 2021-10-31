@@ -24,17 +24,11 @@ export default function BudgetInputScreen() {
     RNFS.readFile(path, 'utf8')
       // add the new data 
       .then((currentData) => {
-          return RNFS.unlink(path)
-            .then(() => {
-              console.log('Overwriting File');
-              const dataJson = { [newId]: data };
-              RNFS.writeFile(path, JSON.stringify(dataJson), 'utf8');
-            })
-            // `unlink` will throw an error, if the item to unlink does not exist
-            .catch((err) => {
-              console.log(err.message);
-            });
-        })
+        const parsedData = JSON.parse(currentData);
+        parsedData[newId] = data;
+
+        RNFS.writeFile(path, JSON.stringify(parsedData), 'utf8');
+      })
       // if file does not exist then write the first entry
       .catch(() => {
 
