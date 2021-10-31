@@ -134,7 +134,9 @@ export default function SearchScreen(props) {
                                 mode="date"
                                 onChange={(event, newDate) => {
                                   setShow(!show);
-                                  onChange(newDate);
+                                  if (newDate !== undefined) {
+                                    onChange(newDate);
+                                  }
                                 }}
                               />
                     )
