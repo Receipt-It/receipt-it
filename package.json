@@ -19,7 +19,6 @@
     "e2e:test": "detox test --configuration ios.sim.debug"
   },
   "dependencies": {
-    "@nozbe/watermelondb": "^0.23.0",
     "@react-native-async-storage/async-storage": "^1.15.9",
     "@react-native-community/cli": "^4.10.1",
     "@react-native-community/datetimepicker": "^3.5.2",
@@ -39,7 +38,9 @@
     "react-hook-form": "^7.17.5",
     "react-native": "0.63.1",
     "react-native-calendars": "1.265.0",
+    "react-native-camera": "^4.2.1",
     "react-native-datepicker": "^1.7.2",
+    "react-native-document-scanner": "https://github.com/ubidreams/react-native-document-scanner",
     "react-native-dropdown-picker": "^5.2.3",
     "react-native-elements": "^3.4.2",
     "react-native-fs": "^2.18.0",

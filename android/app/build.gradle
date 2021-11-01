@@ -132,6 +132,7 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        missingDimensionStrategy 'react-native-camera', 'general'
     }
     dexOptions {
         javaMaxHeapSize "4g"
@@ -182,6 +183,7 @@ android {
 dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
     compile 'com.android.support:multidex:1.0.0'
+    compile project(':react-native-document-scanner')
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")

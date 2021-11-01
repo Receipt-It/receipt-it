@@ -14,9 +14,13 @@ export default function ReceiptHistoryScreen(props) {
           const date = new Date(value.date);
           return (
             <Card key={key}>
-              <Card.Title>{date.toDateString()} {value.companyName}</Card.Title>
+              <Card.Title>
+                <Text>{date.toDateString()}</Text>
+                <Text>{value.companyName}</Text>
+              </Card.Title>
               <Card.Divider />
-              <Text>{value.totalExpenses}</Text>
+              <Text>{value.category}</Text>
+              <Text>Total Expenses: ${value.totalExpenses}</Text>
             </Card>
           );
         })
