@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { compose, lifecycle } from 'recompose';
 
 import ReceiptHistoryScreen from './ReceiptHistoryView';
-import { loadReceipts } from './ReceiptHistoryState';
+import { loadReceipts, refreshReceipts } from './ReceiptHistoryState';
 
 export default compose(
   connect(
@@ -11,7 +11,8 @@ export default compose(
         receipts: state.receipt.receipts
     }),
     dispatch => ({
-      loadReceipts: () => dispatch(loadReceipts())
+      loadReceipts: () => dispatch(loadReceipts()),
+      refreshReceipts: () => dispatch(refreshReceipts()),
     }),
   ),
   lifecycle({
