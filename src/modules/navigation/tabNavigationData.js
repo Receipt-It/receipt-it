@@ -3,6 +3,7 @@ import ReceiptInputScreen from '../receiptInput/ReceiptInputViewContainer';
 import ReceiptHistoryScreen from '../receiptHistory/ReceiptHistoryViewContainer';
 import GalleryScreen from '../gallery/GalleryViewContainer';
 import SearchScreen from '../search/SearchViewContainer';
+import BudgetInputScreen from '../budget/BudgetInputViewContainer';
 
 const iconHome = require('../../../assets/images/tabbar/home.png');
 const iconCalendar = require('../../../assets/images/tabbar/calendar.png');
@@ -33,7 +34,7 @@ const tabNavigationData = [
   },
   {
     name: 'Starred',
-    component: GalleryScreen,
+    component: BudgetInputScreen,
     icon: iconComponents,
   },
 ];
