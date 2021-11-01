@@ -120,7 +120,7 @@ export default function BudgetInputScreen() {
   );
 };
 
-const path = `${RNFS.ExternalDirectoryPath}/data.txt`;
+const path = `${RNFS.ExternalDirectoryPath}/budget.txt`;
 
 const styles = StyleSheet.create({
   label: {
