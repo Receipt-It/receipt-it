@@ -137,7 +137,7 @@ export default function ReceiptInputScreen() {
             <View style={formStyles.row}>
               <View style={formStyles.date}>
                 <Text style={formStyles.label}>Date</Text>
-                <Button onPress={() => setcalendarShow(!calendarShow)} title={`${getValues("date")}`} />
+                <Button onPress={() => setcalendarShow(!calendarShow)} title={`${getValues("date").toDateString()}`} />
                 <Controller
                   control={control}
                   render={({field: { onChange, value }}) => (
