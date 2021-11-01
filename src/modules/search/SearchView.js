@@ -1,5 +1,7 @@
-import React from 'react';
-import DatePicker from 'react-native-datepicker';
+import React, { useState } from 'react';
+import dayjs from 'dayjs';
+import _ from 'lodash';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import {
   StyleSheet,
   View,
@@ -18,58 +20,102 @@ import { Card, ListItem, Button, Icon, SearchBar } from 'react-native-elements';
 import { fonts, colors } from '../../styles';
 import { Text } from '../../components/StyledText';
 import { Dropdown } from '../../components';
+import * as RNFS from 'react-native-fs';
 
-export default class SearchScreen extends React.Component {
+export default function SearchScreen(props) {
 
-   state = {
-      search: '',
-      value: '',
-    };
+    const [search, setSearch] = useState("");
 
-    updateSearch = (search) => {
-      this.setState({ search });
-    };
+    const [date, setDate] = useState("");
 
-    constructor(props){
-        super(props)
-        this.state = {date:"2016-05-15"}
+    const [category, setCategory] = useState("");
+
+    const [searchResults, setSearchResults] = useState([]);
+
+    const { handleSubmit, control, reset, getValues, formState: { errors } } = useForm({
+    defaultValues: {
+      search: "",
+      date: new Date(),
+      category: "none"
+    }
+  });
+
+  const [show, setShow] = useState(false);
+
+  const onSubmit = async data => {
+      if (data.search !== '') {
+        setSearch(data.search);
       }
+      if (data.date !== '') {
+        setDate(data.date);
+      }
+      setCategory(data.category);
+      //console.log(search);
+      console.log(data.date);
+      console.log(data.category);
+    };
 
-  render() {
-  const { search } = this.state;
+  React.useEffect(() => {
+    let filteredResults = Object.values(props.receipts);
+    console.log(filteredResults);
+    if (date !== "") {
+                filteredResults = filteredResults.filter(result => dayjs(result.date).format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY'))
+                console.log(dayjs(date).format('DD/MM/YYYY'));
+        }
+    if (search != "") {
+            filteredResults = filteredResults.filter(result => result.companyName.includes(search))
+            //console.log(search);
+    }
+    if (category != "none") {
+                filteredResults = filteredResults.filter(result => result.category === category)
+                console.log('date');
+                console.log(category);
+    }
+    console.log(filteredResults);
+    setSearchResults(filteredResults);
+  }, [search, date, category]);
 
   return (
   <ScrollView
         style={styles.container}
         contentContainerStyle={{ paddingBottom: 20 }}
       >
-    <View style={styles.container}>
-           <SearchBar
-                   inputStyle={{backgroundColor: 'white'}}
-                   leftIconContainerStyle={{backgroundColor: 'white'}}
-                   inputContainerStyle={{backgroundColor: 'white'}}
-                   containerStyle={{backgroundColor: 'white', borderWidth: 1, borderRadius: 5}}
-                   placeholderTextColor={'#g5g5g5'}
-                   placeholder={'Pritish Vaidya'}
-                  placeholder="Search Here..."
-                  onChangeText={this.updateSearch}
-                  value={search}
-                />
+    <View>
+           <Controller
+                     control={control}
+                     render={({field: { onChange, onBlur, value }}) => (
+                       <TextInput
+                         style={styles.input}
+                         onBlur={onBlur}
+                         onChangeText={input => onChange(input)}
+                         value={value}
+                       />
+                     )}
+                     name="search"
+                     rules={{ required: true }}
+                   />
                 <View style={styles.rowContainer}>
                 <Text>
                 Category:
                 </Text>
                 </View>
                 <View style={styles.rowContainer}>
-                                            <Picker
-                                              style={styles.picker}
-                                              selectedValue={this.state.value}
-                                              onValueChange={(itemValue, itemIndex) => onChange(itemValue)}
-                                            >
-                                              {
-                                                dropdownItems.map(item => <Picker.Item key={item.key} label={item.label} value={item.value} />)
-                                              }
-                                            </Picker>
+                   <Controller
+                             control={control}
+                             render={({field: { onChange, value }}) => (
+                               <Picker
+                                 style={styles.picker}
+                                 selectedValue={value}
+                                 onValueChange={(itemValue, itemIndex) => onChange(itemValue)}
+                               >
+                                 {
+                                   dropdownItems.map(item => <Picker.Item key={item.key} label={item.label} value={item.value} />)
+                                 }
+                               </Picker>
+                           )}
+                             name="category"
+                             rules={{ required: true }}
+                           />
                 </View>
                 <View style={styles.rowContainer}>
                 <Text>
@@ -77,61 +123,61 @@ export default class SearchScreen extends React.Component {
                 </Text>
                 </View>
                 <View style={styles.rowContainer}>
-                <DatePicker
-                style={{width: '100%', height: '50%'}}
-                        date={this.state.date}
-                        mode="date"
-                        placeholder="select date"
-                        format="YYYY-MM-DD"
-                        minDate="2016-05-01"
-                        maxDate="2016-06-01"
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        customStyles={{
-                          dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                          },
-                          dateInput: {
-                            marginLeft: 36,
-                            backgroundColor: 'white',
-                            borderColor: "black",
-                            borderRadius: 5
-                          }
-                        }}
-                        onDateChange={(date) => {this.setState({date: date})}}
-                      />
+                <View style={styles.date}>
+                <Button onPress={() => setShow(!show)} title={`${getValues("date")}`} />
+                <Controller
+                            control={control}
+                            render={({field: { onChange, value }}) => (
+                              show && (
+                              <DateTimePicker
+                                value={value}
+                                mode="date"
+                                onChange={(event, newDate) => {
+                                  setShow(!show);
+                                  if (newDate !== undefined) {
+                                    onChange(newDate);
+                                  }
+                                }}
+                              />
+                    )
+                            )}
+                            name="date"
+                            rules={{ required: true }}
+                          />
+                </View>
+                          <View style={styles.date}>
+                      <Button style={[styles.button, {flexBasis: '47%'}]}
+                              primary
+                              rounded
+                              title="Search"
+                              onPress={handleSubmit(onSubmit)} />
+                              </View>
                       </View>
         <View style={styles.sectionLarge}>
-          <Card>
-            <Card.Title>4/27/2019 Target</Card.Title>
-            <Card.Divider/>
-            <View style={styles.rowContainer}>
-            <Lightbox activeProps={{width: '100%', height: '100%'}}>
-            <Image style={styles.image} source={require('../../../assets/images/TestReceipt.jpg')} />
-            </Lightbox>
-            <Text>
-            $50 No description
-            </Text>
-            </View>
-            <Card.Divider/>
-            <Text>
-            Groceries
-            </Text>
-          </Card>
+        <View>
+                   {searchResults.map((results) => {
+                                  const date = new Date(results.date);
+                                  return (
+                                    <Card>
+                                      <Card.Title>{date.toDateString()} {results.companyName}</Card.Title>
+                                      <Card.Divider />
+                                      <Text>{results.totalExpenses}</Text>
+                                    </Card>
+                     );
+                    })
+                   }
+        </View>
         </View>
     </View>
     </ScrollView>
   );
-  }
 }
 
 const dropdownItems = [
-  {key: 1, label: 'Groceries', value: 'groceries'},
-  {key: 2, label: 'Entertainment', value: 'entertainment'},
-  {key: 3, label: 'Transportation', value: 'transportation'},
+    {key: 1, label: 'Grocery', value: 'grocery'},
+    {key: 2, label: 'Food', value: 'food'},
+    {key: 3, label: 'Clothes', value: 'clothes'},
+    {key: 4, label: 'None', value: 'none'},
 ]
 
 const styles = StyleSheet.create({
@@ -145,6 +191,14 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: -20,
   },
+  button: {
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  date: {
+      flex: 1,
+      paddingRight: 5,
+    },
   section: {
     flex: 1,
     paddingHorizontal: 20,
