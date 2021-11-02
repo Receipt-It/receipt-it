@@ -81,6 +81,11 @@ export default function SearchScreen(props) {
         contentContainerStyle={{ paddingBottom: 20 }}
       >
     <View>
+                    <View style={styles.rowContainer}>
+                    <Text>
+                    Search by company/description:
+                    </Text>
+                    </View>
            <Controller
                      control={control}
                      render={({field: { onChange, onBlur, value }}) => (
@@ -244,8 +249,9 @@ const styles = StyleSheet.create({
   input: {
       height: 40,
       margin: 12,
-      borderWidth: 1,
       padding: 10,
+      color: 'black',
+      backgroundColor: 'white',
     },
   image: {
       height: 100,
