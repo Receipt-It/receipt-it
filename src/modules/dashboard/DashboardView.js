@@ -7,7 +7,7 @@ import {
   ImageBackground,
   ScrollView,
 } from 'react-native';
-
+import {ProgressBar} from '@react-native-community/progress-bar-android';
 import { Card } from 'react-native-elements';
 import { fonts, colors } from '../../styles';
 import { Text } from '../../components/StyledText';
@@ -47,7 +47,7 @@ export default function DashboardScreen(props) {
             Dashboard
           </Text>
           <VictoryPie
-                    colorScale={["gold", "cyan", "navy"]}
+                    colorScale={["#F19820", "#03989E", "#EDCFC5"]}
                     labels={() => null}
                     innerRadius={50}
                       data={[
@@ -61,16 +61,42 @@ export default function DashboardScreen(props) {
                   <Text size={20} style={styles.title}>
                     Total Expenses: ${TotalExpenses}
                   </Text>
+                  <View style={styles.row}>
+                  <View style={styles.rowItem}>
                   <VictoryLegend x={25} y={25}
                     orientation="vertical"
                     gutter={20}
                     rowGutter={{ top: 0, bottom: 3 }}
                     data={[
-                        { name: `${Grocery[0]} $${Grocery[1]}`, symbol: { fill: "gold" }, labels: { fill: "black" }  },
-                        { name: `${Food[0]} $${Food[1]}`, symbol: { fill: "cyan" }, labels: { fill: "black" }  },
-                        { name: `${Clothes[0]} $${Clothes[1]}`, symbol: { fill: "navy" }, labels: { fill: "black" }  }
+                        { name: `${Grocery[0]} $${Grocery[1]}`, symbol: { fill: "#F19820" }, labels: { fill: "black" }  },
+                        { name: `${Food[0]} $${Food[1]}`, symbol: { fill: "#03989E" }, labels: { fill: "black" }  },
+                        { name: `${Clothes[0]} $${Clothes[1]}`, symbol: { fill: "#EDCFC5" }, labels: { fill: "black" }  }
                       ]}
                   />
+                  </View>
+                  <View style={styles.pBarStyle}>
+                  <ProgressBar
+                            styleAttr="Horizontal"
+                            indeterminate={false}
+                            progress={0.5}
+                          />
+                  <View style={styles.pBarItem}>
+                  <ProgressBar
+                            styleAttr="Horizontal"
+                            indeterminate={false}
+                            progress={0.5}
+                          />
+                  </View>
+                  <View style={styles.pBarItem}>
+                  <ProgressBar
+                            styleAttr="Horizontal"
+                            indeterminate={false}
+                            progress={0.5}
+                          />
+                  </View>
+                  </View>
+
+                  </View>
          </View>
     </View>
   );
@@ -135,4 +161,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.primary,
   },
+  row: {
+    flexDirection: 'row',
+  },
+  rowItem: {
+    flex: 1,
+  },
+  pBarStyle: {
+    marginTop: 30,
+    flex: 1,
+  },
+  pBarItem: {
+    marginTop: 18,
+  }
 });

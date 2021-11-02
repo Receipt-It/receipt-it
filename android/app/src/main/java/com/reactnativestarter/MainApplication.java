@@ -5,6 +5,7 @@ import android.content.Context;
 import com.facebook.react.PackageList;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.androidprogressbar.RNCProgressBarPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.rnfs.RNFSPackage;
 import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage;

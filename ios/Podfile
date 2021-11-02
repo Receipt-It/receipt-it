@@ -24,6 +24,8 @@ target 'ReactNativeStarter' do
 
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
+  pod 'react-native-progress-bar-android', :path => '../node_modules/@react-native-community/progress-bar-android'
+
   target 'ReactNativeStarterTests' do
     inherit! :search_paths
     # Pods for testing
