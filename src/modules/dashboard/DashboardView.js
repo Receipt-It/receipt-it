@@ -76,12 +76,14 @@ export default function DashboardScreen(props) {
                   </View>
                   <View style={styles.pBarStyle}>
                   <ProgressBar
+                            color="#F19820"
                             styleAttr="Horizontal"
                             indeterminate={false}
                             progress={0.5}
                           />
                   <View style={styles.pBarItem}>
                   <ProgressBar
+                            color="#03989E"
                             styleAttr="Horizontal"
                             indeterminate={false}
                             progress={0.5}
@@ -89,6 +91,7 @@ export default function DashboardScreen(props) {
                   </View>
                   <View style={styles.pBarItem}>
                   <ProgressBar
+                            color="#EDCFC5"
                             styleAttr="Horizontal"
                             indeterminate={false}
                             progress={0.5}
