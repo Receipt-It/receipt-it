@@ -164,10 +164,20 @@ export default function SearchScreen(props) {
                                   const date = new Date(results.date);
                                   return (
                                     <Card>
-                                      <Card.Title>{date.toDateString()} {results.companyName}</Card.Title>
-                                      <Card.Divider />
-                                      <Text>{results.totalExpenses}</Text>
-                                    </Card>
+                                                                          <Card.Title>{date.toDateString()} {results.companyName}</Card.Title>
+                                                                          <Card.Divider />
+                                                                          <View style={styles.rowContainer}>
+                                                                          <Lightbox activeProps={{width: '100%', height: '100%'}}>
+                                                                                <Image style={styles.image} source={{ uri: `file://${results.imagePath}` }}
+                                                                          />
+                                                                          </Lightbox>
+                                                                          <Text>
+                                                                                {results.description}
+                                                                          </Text>
+                                                                          </View>
+                                                                          <Card.Divider/>
+                                                                          <Text>{results.category} {results.totalExpenses}</Text>
+                                                                        </Card>
                      );
                     })
                    }
