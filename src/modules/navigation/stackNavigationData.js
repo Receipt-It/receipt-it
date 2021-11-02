@@ -4,13 +4,11 @@ import { TouchableOpacity, Image } from 'react-native';
 import TabNavigator from './MainTabNavigator';
 import GalleryScreen from '../gallery/GalleryViewContainer';
 import AvailableInFullVersion from '../../modules/availableInFullVersion/AvailableInFullVersionViewContainer';
-
-// import ProfileScreen from '../profile/ProfileViewContainer';
-// import ArticleScreen from '../article/ArticleViewContainer';
-// import ChatScreen from '../chat/ChatViewContainer';
-// import MessagesScreen from '../chat/MessagesViewContainer';
-// import ChartsScreen from '../charts/ChartsViewContainer';
-// import AuthScreen from '../auth/AuthViewContainer';
+import DashboardScreen from '../dashboard/DashboardViewContainer';
+import ReceiptInputScreen from '../receiptInput/ReceiptInputViewContainer';
+import ReceiptHistoryScreen from '../receiptHistory/ReceiptHistoryViewContainer';
+import SearchScreen from '../search/SearchViewContainer';
+import BudgetInputScreen from '../budget/BudgetInputViewContainer';
 
 import { colors, fonts } from '../../styles';
 
@@ -38,7 +36,7 @@ const headerBackground = require('../../../assets/images/topBarBg.png');
 
 const StackNavigationData = [
   {
-    name: 'React Native Starter',
+    name: 'Receipt-It',
     component: TabNavigator,
     headerLeft: null,
     headerBackground: { source: headerBackground },
@@ -49,8 +47,8 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Charts',
-    component: AvailableInFullVersion,
+    name: 'Dashboard',
+    component: DashboardScreen,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -60,8 +58,8 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Blog',
-    component: AvailableInFullVersion,
+    name: 'Scanner',
+    component: ReceiptInputScreen,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -71,8 +69,8 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Gallery',
-    component: GalleryScreen,
+    name: 'Search',
+    component: SearchScreen,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -82,8 +80,8 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Profile',
-    component: AvailableInFullVersion,
+    name: 'History',
+    component: ReceiptHistoryScreen,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -93,41 +91,8 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Article',
-    component: AvailableInFullVersion,
-    headerLeft: headerLeftComponent,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Chat',
-    component: AvailableInFullVersion,
-    headerLeft: headerLeftComponent,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Messages',
-    component: AvailableInFullVersion,
-    headerLeft: headerLeftComponent,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-    },
-  },
-  {
-    name: 'Auth',
-    component: AvailableInFullVersion,
+    name: 'Budget',
+    component: BudgetInputScreen,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {

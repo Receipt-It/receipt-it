@@ -11,31 +11,37 @@ const iconGrids = require('../../../assets/images/tabbar/grids.png');
 const iconPages = require('../../../assets/images/tabbar/pages.png');
 const iconComponents = require('../../../assets/images/tabbar/components.png');
 
+const iconDashboard = require('../../../assets/images/tabbar/dashboard.png');
+const iconScanner = require('../../../assets/images/tabbar/scanner.png');
+const iconSearch = require('../../../assets/images/tabbar/search.png');
+const iconHistory = require('../../../assets/images/tabbar/history.png');
+const iconBudget = require('../../../assets/images/tabbar/budget.png');
+
 const tabNavigationData = [
   {
     name: 'Dashboard',
     component: DashboardScreen,
-    icon: iconHome,
+    icon: iconDashboard,
   },
   {
     name: 'Scanner',
     component: ReceiptInputScreen,
-    icon: iconCalendar,
+    icon: iconScanner,
   },
   {
     name: 'Search',
     component: SearchScreen,
-    icon: iconGrids,
+    icon: iconSearch,
   },
   {
     name: 'History',
     component: ReceiptHistoryScreen,
-    icon: iconPages,
+    icon: iconHistory,
   },
   {
-    name: 'Starred',
+    name: 'Budget',
     component: BudgetInputScreen,
-    icon: iconComponents,
+    icon: iconBudget,
   },
 ];
 
