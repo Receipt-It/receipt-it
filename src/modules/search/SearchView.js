@@ -176,7 +176,7 @@ export default function SearchScreen(props) {
                                                                           </Text>
                                                                           </View>
                                                                           <Card.Divider/>
-                                                                          <Text>{results.category} {results.totalExpenses}</Text>
+                                                                          <Text>{results.category} ${results.totalExpenses}</Text>
                                                                         </Card>
                      );
                     })
