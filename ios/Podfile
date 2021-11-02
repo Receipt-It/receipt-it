@@ -22,6 +22,8 @@ target 'ReactNativeStarter' do
 
   pod 'react-native-document-scanner', :path => '../node_modules/react-native-document-scanner'
 
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
   target 'ReactNativeStarterTests' do
     inherit! :search_paths
     # Pods for testing

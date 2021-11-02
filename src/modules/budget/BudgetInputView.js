@@ -130,7 +130,7 @@ const path = `${RNFS.ExternalDirectoryPath}/budget.txt`;
 
 const styles = StyleSheet.create({
   label: {
-    color: 'white',
+    color: 'black',
     margin: 20,
     marginLeft: 0,
   },
@@ -144,14 +144,13 @@ const styles = StyleSheet.create({
     marginTop: 40,
     color: 'white',
     height: 40,
-    backgroundColor: '#ec5990',
+    backgroundColor: '#248cdc',
     borderRadius: 4,
   },
   container: {
     flex: 1,
     paddingTop: 10,
     padding: 10,
-    backgroundColor: '#0e101c',
   },
   description: {
     backgroundColor: 'white',
