@@ -2,25 +2,26 @@ import { connect } from 'react-redux';
 import { compose, lifecycle } from 'recompose';
 
 import DashboardScreen from './DashboardView';
-import { loadReceipts, loadBudget } from './DashboardState';
+import { loadBudget } from './DashboardState';
+import { loadReceipts } from '../receiptHistory/ReceiptHistoryState';
 
 export default compose(
   connect(
     state => ({
-        isLoading: state.receipt.isReceiptLoading,
-        receipts: state.receipt.receipts,
         isBudgetLoading: state.budget.isBudgetLoading,
+        isReceiptLoading: state.receipt.isLoading,
         budget: state.budget.budget,
+        receipts: state.receipt.receipts,
     }),
     dispatch => ({
+      loadBudget: () => dispatch(loadBudget()),
       loadReceipts: () => dispatch(loadReceipts()),
-      loadBudget: () => dispatch(loadBudget())
     }),
   ),
   lifecycle({
     componentDidMount() {
-      this.props.loadReceipts();
       this.props.loadBudget();
+      this.props.loadReceipts();
     }
   })
 )(DashboardScreen);
