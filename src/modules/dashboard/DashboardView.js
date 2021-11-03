@@ -22,6 +22,17 @@ export default function DashboardScreen(props) {
 
   const [TotalExpenses, setTotalExpenses] = useState(determineTotalCost(Object.values(props.receipts)));
 
+  const [ClothesPercentage, setClothesPercentage] = useState(determinePercentage(Object.values(props.receipts), "clothes", Object.values(props.budget)[0].clothes));
+
+  const [FoodPercentage, setFoodPercentage] = useState(determinePercentage(Object.values(props.receipts), "food", Object.values(props.budget)[0].food));
+
+  const [GroceryPercentage, setGroceryPercentage] = useState(determinePercentage(Object.values(props.receipts), "grocery", Object.values(props.budget)[0].grocery));
+
+  function determinePercentage(data, category, budgetValue) {
+    const total = determineTotal(data, category);
+    return total/budgetValue;
+  }
+
   function determineTotal(data, category) {
     let total = 0;
     for (let i = 0; i < data.length; i++) {
@@ -79,14 +90,14 @@ export default function DashboardScreen(props) {
                             color="#F19820"
                             styleAttr="Horizontal"
                             indeterminate={false}
-                            progress={0.5}
+                            progress={GroceryPercentage}
                           />
                   <View style={styles.pBarItem}>
                   <ProgressBar
                             color="#03989E"
                             styleAttr="Horizontal"
                             indeterminate={false}
-                            progress={0.5}
+                            progress={FoodPercentage}
                           />
                   </View>
                   <View style={styles.pBarItem}>
@@ -94,7 +105,7 @@ export default function DashboardScreen(props) {
                             color="#EDCFC5"
                             styleAttr="Horizontal"
                             indeterminate={false}
-                            progress={0.5}
+                            progress={ClothesPercentage}
                           />
                   </View>
                   </View>
