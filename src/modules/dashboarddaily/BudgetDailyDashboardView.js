@@ -15,18 +15,13 @@ import { Text } from '../../components/StyledText';
 
 const galleryIcon = require('../../../assets/images/pages/gallery.png');
 
-export default function BudgetMonthlyDashboardScreen(props) {
-  console.log(Object.values(props.budget));
+export default function BudgetDailyDashboardScreen(props) {
 
-  const [Grocery, setGrocery] = useState(["Grocery", renderProps(Object.values(props.budget)[0].grocery)]);
+  const [Grocery, setGrocery] = useState(["Grocery", (Object.values(props.budget)[0].grocery/30).toFixed(2)]);
 
-  const [Food, setFood] = useState(["Food", renderProps(Object.values(props.budget)[0].food)]);
+  const [Food, setFood] = useState(["Food", (Object.values(props.budget)[0].food/30).toFixed(2)]);
 
-  const [Clothes, setClothes] = useState(["Clothes", renderProps(Object.values(props.budget)[0].clothes)]);
-
-  function renderProps(data) {
-    return data;
-  }
+  const [Clothes, setClothes] = useState(["Clothes", (Object.values(props.budget)[0].clothes/30).toFixed(2)]);
 
   return (
     <View style={styles.container}>
@@ -47,7 +42,7 @@ export default function BudgetMonthlyDashboardScreen(props) {
         </View>
         <View style={styles.description}>
                   <Text size={20} style={styles.title}>
-                      Monthly Budget
+                      Weekly Budget
                   </Text>
                   <View style={styles.row}>
                   <View style={styles.rowItem}>

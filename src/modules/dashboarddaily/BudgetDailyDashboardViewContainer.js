@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { compose, lifecycle } from 'recompose';
 
-import BudgetWeeklyDashboardScreen from './BudgetWeeklyDashboardView';
+import BudgetDailyDashboardScreen from './BudgetDailyDashboardView';
 import { loadBudget } from '../dashboard/DashboardState';
 import { loadReceipts } from '../receiptHistory/ReceiptHistoryState';
 
@@ -24,4 +24,4 @@ export default compose(
       this.props.loadReceipts();
     }
   })
-)(BudgetWeeklyDashboardScreen);
+)(BudgetDailyDashboardScreen);

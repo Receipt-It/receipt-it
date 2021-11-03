@@ -10,6 +10,8 @@ import ReceiptHistoryScreen from '../receiptHistory/ReceiptHistoryViewContainer'
 import SearchScreen from '../search/SearchViewContainer';
 import BudgetInputScreen from '../budget/BudgetInputViewContainer';
 import BudgetMonthlyDashboardScreen from '../dashboardmonthly/BudgetMonthlyDashboardViewContainer';
+import BudgetWeeklyDashboardScreen from '../dashboardweekly/BudgetWeeklyDashboardViewContainer';
+import BudgetDailyDashboardScreen from '../dashboarddaily/BudgetDailyDashboardViewContainer';
 
 import { colors, fonts } from '../../styles';
 
@@ -111,8 +113,30 @@ const StackNavigationData = [
         fontFamily: fonts.primaryRegular,
         color: colors.white,
         fontSize: 18,
-      },
     },
+  },
+  {
+        name: 'BudgetWeekly',
+        component: BudgetWeeklyDashboardScreen,
+        headerLeft: null,
+        headerBackground: { source: headerBackground },
+        headerTitleStyle: {
+          fontFamily: fonts.primaryRegular,
+          color: colors.white,
+          fontSize: 18,
+    },
+  },
+  {
+          name: 'BudgetDaily',
+          component: BudgetDailyDashboardScreen,
+          headerLeft: null,
+          headerBackground: { source: headerBackground },
+          headerTitleStyle: {
+            fontFamily: fonts.primaryRegular,
+            color: colors.white,
+            fontSize: 18,
+   },
+  },
 ]
 
 export default StackNavigationData;
