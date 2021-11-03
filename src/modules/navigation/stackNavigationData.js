@@ -9,6 +9,7 @@ import ReceiptInputScreen from '../receiptInput/ReceiptInputViewContainer';
 import ReceiptHistoryScreen from '../receiptHistory/ReceiptHistoryViewContainer';
 import SearchScreen from '../search/SearchViewContainer';
 import BudgetInputScreen from '../budget/BudgetInputViewContainer';
+import BudgetMonthlyDashboardScreen from '../dashboardmonthly/BudgetMonthlyDashboardViewContainer';
 
 import { colors, fonts } from '../../styles';
 
@@ -101,6 +102,17 @@ const StackNavigationData = [
       fontSize: 18,
     },
   },
+  {
+      name: 'BudgetMonthly',
+      component: BudgetMonthlyDashboardScreen,
+      headerLeft: null,
+      headerBackground: { source: headerBackground },
+      headerTitleStyle: {
+        fontFamily: fonts.primaryRegular,
+        color: colors.white,
+        fontSize: 18,
+      },
+    },
 ]
 
 export default StackNavigationData;

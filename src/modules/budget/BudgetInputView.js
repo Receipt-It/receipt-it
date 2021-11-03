@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import RNFS from 'react-native-fs';
-import { Text, View, ScrollView, TextInput, Button,  StyleSheet } from "react-native";
+import { Text, View, ScrollView, TextInput, Button,  StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
 
-export default function BudgetInputScreen() {
+import { colors, fonts } from '../../styles';
+
+const galleryIcon = require('../../../assets/images/pages/gallery.png');
+
+export default function BudgetInputScreen(props) {
 
   const { handleSubmit, control, reset, getValues, formState: { errors } } = useForm({
     defaultValues: {
@@ -122,6 +126,17 @@ export default function BudgetInputScreen() {
                 onPress={handleSubmit(onSubmit)}
               />
             </View>
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('BudgetMonthly')}
+        style={styles.item}
+      >
+        <Image
+          resizeMode="contain"
+          source={galleryIcon}
+          style={styles.itemImage}
+         />
+         <Text style={styles.itemText}>Monthly Budget</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -129,6 +144,20 @@ export default function BudgetInputScreen() {
 const path = `${RNFS.ExternalDirectoryPath}/budget.txt`;
 
 const styles = StyleSheet.create({
+  item: {
+    flex: 1,
+    height: 120,
+    paddingVertical: 20,
+    borderColor: colors.primaryLight,
+    borderWidth: 1,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    marginHorizontal: 5,
+  },
+  itemImage: {
+    height: 35,
+  },
   label: {
     color: 'black',
     margin: 20,
