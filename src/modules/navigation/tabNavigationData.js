@@ -4,6 +4,7 @@ import ReceiptHistoryScreen from '../receiptHistory/ReceiptHistoryViewContainer'
 import GalleryScreen from '../gallery/GalleryViewContainer';
 import SearchScreen from '../search/SearchViewContainer';
 import BudgetInputScreen from '../budget/BudgetInputViewContainer';
+import BudgetDashboardMainScreen from '../BudgetDashboardMain/BudgetMainViewContainer';
 
 const iconHome = require('../../../assets/images/tabbar/home.png');
 const iconCalendar = require('../../../assets/images/tabbar/calendar.png');
@@ -40,7 +41,7 @@ const tabNavigationData = [
   },
   {
     name: 'Budget',
-    component: BudgetInputScreen,
+    component: BudgetDashboardMainScreen,
     icon: iconBudget,
   },
 ];

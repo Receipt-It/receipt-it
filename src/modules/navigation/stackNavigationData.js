@@ -12,6 +12,7 @@ import BudgetInputScreen from '../budget/BudgetInputViewContainer';
 import BudgetMonthlyDashboardScreen from '../dashboardmonthly/BudgetMonthlyDashboardViewContainer';
 import BudgetWeeklyDashboardScreen from '../dashboardweekly/BudgetWeeklyDashboardViewContainer';
 import BudgetDailyDashboardScreen from '../dashboarddaily/BudgetDailyDashboardViewContainer';
+import BudgetDashboardMainScreen from '../BudgetDashboardMain/BudgetMainViewContainer';
 
 import { colors, fonts } from '../../styles';
 
@@ -94,9 +95,9 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Budget',
+    name: 'BudgetInput',
     component: BudgetInputScreen,
-    headerLeft: headerLeftComponent,
+    headerLeft: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -137,6 +138,17 @@ const StackNavigationData = [
             fontSize: 18,
    },
   },
+  {
+            name: 'BudgetMain',
+            component: BudgetDashboardMainScreen,
+            headerLeft: headerLeftComponent,
+            headerBackground: { source: headerBackground },
+            headerTitleStyle: {
+              fontFamily: fonts.primaryRegular,
+              color: colors.white,
+              fontSize: 18,
+     },
+    },
 ]
 
 export default StackNavigationData;

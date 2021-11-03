@@ -126,39 +126,6 @@ export default function BudgetInputScreen(props) {
                 onPress={handleSubmit(onSubmit)}
               />
             </View>
-      <TouchableOpacity
-        onPress={() => props.navigation.navigate('BudgetMonthly')}
-        style={styles.item}
-      >
-        <Image
-          resizeMode="contain"
-          source={galleryIcon}
-          style={styles.itemImage}
-         />
-         <Text style={styles.itemText}>Monthly Budget</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-              onPress={() => props.navigation.navigate('BudgetWeekly')}
-              style={styles.item}
-            >
-              <Image
-                resizeMode="contain"
-                source={galleryIcon}
-                style={styles.itemImage}
-               />
-               <Text style={styles.itemText}>Weekly Budget</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-                    onPress={() => props.navigation.navigate('BudgetDaily')}
-                    style={styles.item}
-                  >
-                    <Image
-                      resizeMode="contain"
-                      source={galleryIcon}
-                      style={styles.itemImage}
-                     />
-                     <Text style={styles.itemText}>Daily Budget</Text>
-      </TouchableOpacity>
     </ScrollView>
   );
 };

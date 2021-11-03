@@ -129,7 +129,7 @@ export default function SearchScreen(props) {
                 </View>
                 <View style={styles.rowContainer}>
                 <View style={styles.date}>
-                <Button onPress={() => setShow(!show)} title={`${getValues("date")}`} />
+                <Button onPress={() => setShow(!show)} title={`${getValues("date").toDateString()}`} />
                 <Controller
                             control={control}
                             render={({field: { onChange, value }}) => (
