@@ -35,41 +35,54 @@ export default function SearchScreen(props) {
     const { handleSubmit, control, reset, getValues, formState: { errors } } = useForm({
     defaultValues: {
       search: "",
-      date: new Date(),
+      date: "",
       category: "none"
     }
   });
 
   const [show, setShow] = useState(false);
 
+  const [clear, setClear] = useState(false);
+
+  const testDate = new Date();
+
+  const handleClear = () => {
+      setDate("");
+      setClear(true);
+  }
+
   const onSubmit = async data => {
-      if (data.search !== '') {
-        setSearch(data.search);
-      }
-      if (data.date !== '') {
+      setSearch(data.search);
+      if (!clear) {
         setDate(data.date);
       }
       setCategory(data.category);
-      //console.log(search);
-      console.log(data.date);
-      console.log(data.category);
+      console.log(data);
     };
+
+  React.useEffect(() => {
+     setDate("");
+  }, [clear])
+
+  React.useEffect(() => {
+      setClear(false);
+  }, [show])
 
   React.useEffect(() => {
     let filteredResults = Object.values(props.receipts);
     console.log(filteredResults);
     if (date !== "") {
-                filteredResults = filteredResults.filter(result => dayjs(result.date).format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY'))
-                console.log(dayjs(date).format('DD/MM/YYYY'));
+                filteredResults = filteredResults.filter(result => dayjs(result.date).format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY'));
+                //console.log(dayjs(date).format('DD/MM/YYYY'));
         }
     if (search != "") {
-            filteredResults = filteredResults.filter(result => result.companyName.includes(search))
+            filteredResults = filteredResults.filter(result => result.companyName.toLowerCase().includes(search.toLowerCase()));
             //console.log(search);
     }
-    if (category != "none") {
-                filteredResults = filteredResults.filter(result => result.category === category)
-                console.log('date');
-                console.log(category);
+    if (category != "" && category != "none") {
+                filteredResults = filteredResults.filter(result => result.category === category);
+                console.log('category is not none');
+                //console.log(category);
     }
     console.log(filteredResults);
     setSearchResults(filteredResults);
@@ -88,6 +101,7 @@ export default function SearchScreen(props) {
                     </View>
            <Controller
                      control={control}
+                     value=""
                      render={({field: { onChange, onBlur, value }}) => (
                        <TextInput
                          style={styles.input}
@@ -97,7 +111,7 @@ export default function SearchScreen(props) {
                        />
                      )}
                      name="search"
-                     rules={{ required: true }}
+                     rules={{ required: false }}
                    />
                 <View style={styles.rowContainer}>
                 <Text>
@@ -107,6 +121,7 @@ export default function SearchScreen(props) {
                 <View style={styles.rowContainer}>
                    <Controller
                              control={control}
+                             value="none"
                              render={({field: { onChange, value }}) => (
                                <Picker
                                  style={styles.picker}
@@ -119,7 +134,7 @@ export default function SearchScreen(props) {
                                </Picker>
                            )}
                              name="category"
-                             rules={{ required: true }}
+                             rules={{ required: false }}
                            />
                 </View>
                 <View style={styles.rowContainer}>
@@ -129,17 +144,17 @@ export default function SearchScreen(props) {
                 </View>
                 <View style={styles.rowContainer}>
                 <View style={styles.date}>
-                <Button onPress={() => setShow(!show)} title={`${getValues("date").toDateString()}`} />
+                <Button onPress={() => setShow(!show)} title={`Choose Date`} />
                 <Controller
                             control={control}
                             render={({field: { onChange, value }}) => (
                               show && (
                               <DateTimePicker
-                                value={value}
+                                value={testDate}
                                 mode="date"
                                 onChange={(event, newDate) => {
                                   setShow(!show);
-                                  if (newDate !== undefined) {
+                                  if (newDate !== undefined && clear == false) {
                                     onChange(newDate);
                                   }
                                 }}
@@ -147,9 +162,16 @@ export default function SearchScreen(props) {
                     )
                             )}
                             name="date"
-                            rules={{ required: true }}
+                            rules={{ required: false }}
                           />
                 </View>
+                <View style={styles.date}>
+                                      <Button style={[styles.button, {flexBasis: '47%'}]}
+                                              primary
+                                              rounded
+                                              title="Clear Date"
+                                              onPress={() => setClear(!clear)} />
+                                              </View>
                           <View style={styles.date}>
                       <Button style={[styles.button, {flexBasis: '47%'}]}
                               primary
