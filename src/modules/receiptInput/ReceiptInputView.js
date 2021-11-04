@@ -9,6 +9,7 @@ import { useForm, Controller } from "react-hook-form";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
 import RNDocumentScanner  from "react-native-document-scanner";
+import { colors } from '../../styles';
 
 export default function ReceiptInputScreen() {
 
@@ -118,7 +119,9 @@ export default function ReceiptInputScreen() {
           />
         ) : (
           <ScrollView style={formStyles.container}>
+            <View style={formStyles.card}>
             <View>
+              <Text style={formStyles.receiptTitle}>INPUT NEW RECEIPT</Text>
               <Text style={formStyles.label}>Company Name</Text>
               <Controller
                 control={control}
@@ -137,7 +140,7 @@ export default function ReceiptInputScreen() {
             <View style={formStyles.row}>
               <View style={formStyles.date}>
                 <Text style={formStyles.label}>Date</Text>
-                <Button onPress={() => setcalendarShow(!calendarShow)} title={`${getValues("date").toDateString()}`} />
+                <Button color= '#f8a494' onPress={() => setcalendarShow(!calendarShow)} title={`${getValues("date").toDateString()}`} />
                 <Controller
                   control={control}
                   render={({field: { onChange, value }}) => (
@@ -224,13 +227,15 @@ export default function ReceiptInputScreen() {
               )
             }
             <View style={formStyles.button}>
-              <Button title="Scan receipt" onPress={openScanner} />
+              <Button color='#A3B2B1' title="Scan receipt" onPress={openScanner} />
             </View>
             <View style={formStyles.button}>
               <Button
+                color="#03989E"
                 title="Submit"
                 onPress={handleSubmit(onSubmit)}
               />
+            </View>
             </View>
           </ScrollView>
         )}
@@ -288,6 +293,17 @@ const scannerStyles = StyleSheet.create({
 });
 
 const formStyles = StyleSheet.create({
+  receiptTitle: {
+    fontSize: 20,
+    //alignItems: 'center',
+    //justifyContent: 'center',
+    paddingBottom: 20,
+    backgroundColor: "#F19820",
+    color: 'white',
+    paddingTop: 20,
+    marginBottom: 20,
+    paddingHorizontal: 60,
+  },
   label: {
     color: 'black',
     margin: 20,
@@ -306,7 +322,6 @@ const formStyles = StyleSheet.create({
     marginTop: 20,
     color: 'white',
     height: 40,
-    backgroundColor: '#ec5990',
     borderRadius: 4,
   },
   container: {
@@ -314,7 +329,7 @@ const formStyles = StyleSheet.create({
     padding: 10,
   },
   description: {
-    backgroundColor: 'white',
+    backgroundColor: colors.bluish,
     flex: 1,
     flexWrap: 'wrap',
     height: 100,
@@ -322,7 +337,7 @@ const formStyles = StyleSheet.create({
     borderRadius: 4,
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: colors.bluish,
     height: 40,
     padding: 10,
     borderRadius: 4,
@@ -345,5 +360,17 @@ const formStyles = StyleSheet.create({
   category: {
     flex: 1,
     paddingLeft: 5
+  },
+  card: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    paddingVertical: 45,
+    paddingHorizontal: 15,
+    width: '90%',
+    marginVertical: 5,
+    marginHorizontal: 20,
+    elevation: 10,
+    marginBottom: 30,
+    shadowColor: '#52006A',
   }
 });
