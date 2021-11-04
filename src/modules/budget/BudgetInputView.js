@@ -125,7 +125,7 @@ export default function BudgetInputScreen(props) {
             </View>
       <View style={styles.button}>
               <Button
-                color="#A3B2B1"
+                color="#03989E"
                 title="Submit"
                 onPress={handleSubmit(onSubmit)}
               />

@@ -18,19 +18,42 @@ const galleryIcon = require('../../../assets/images/pages/gallery.png');
 export default function BudgetMonthlyDashboardScreen(props) {
   console.log(Object.values(props.budget));
 
-  const [Grocery, setGrocery] = useState(["Grocery", renderProps(Object.values(props.budget)[0].grocery)]);
+  const [Grocery, setGrocery] = useState(["Grocery", determineTotalGrocery(Object.values(props.budget))]);
 
-  const [Food, setFood] = useState(["Food", renderProps(Object.values(props.budget)[0].food)]);
+  const [Food, setFood] = useState(["Food", determineTotalFood(Object.values(props.budget))]);
 
-  const [Clothes, setClothes] = useState(["Clothes", renderProps(Object.values(props.budget)[0].clothes)]);
+  const [Clothes, setClothes] = useState(["Clothes", determineTotalClothes(Object.values(props.budget))]);
 
-  const [totalBudget, setTotalBudget] =useState(determineTotalBudget(Object.values(props.budget)[0]));
+  const [totalBudget, setTotalBudget] = useState(determineTotalBudget(Object.values(props.budget)));
 
   function determineTotalBudget(data) {
     console.log(data);
-    const total = (parseInt(data.grocery) + parseInt(data.food) + parseInt(data.clothes));
+    if (data.length == 0) {
+            return 1;
+    }
+    const total = (parseInt(data[0].grocery) + parseInt(data[0].food) + parseInt(data[0].clothes));
     return total;
   }
+
+  function determineTotalFood(data) {
+    if (data.length == 0) {
+        return 1;
+    }
+    return data[0].food;
+  }
+  function determineTotalGrocery(data) {
+      if (data.length == 0) {
+          return 1;
+      }
+      return data[0].grocery;
+  }
+  function determineTotalClothes(data) {
+      if (data.length == 0) {
+          return 1;
+      }
+      return data[0].clothes;
+  }
+
   function renderProps(data) {
     return data;
   }

@@ -22,15 +22,37 @@ export default function DashboardScreen(props) {
 
   const [TotalExpenses, setTotalExpenses] = useState(determineTotalCost(Object.values(props.receipts)));
 
-  const [ClothesPercentage, setClothesPercentage] = useState(determinePercentage(Object.values(props.receipts), "clothes", Object.values(props.budget)[0].clothes));
+  const [ClothesPercentage, setClothesPercentage] = useState(determinePercentage(Object.values(props.receipts), "clothes", determineClothes(Object.values(props.budget))));
 
-  const [FoodPercentage, setFoodPercentage] = useState(determinePercentage(Object.values(props.receipts), "food", Object.values(props.budget)[0].food));
+  const [FoodPercentage, setFoodPercentage] = useState(determinePercentage(Object.values(props.receipts), "food", determineFood(Object.values(props.budget))));
 
-  const [GroceryPercentage, setGroceryPercentage] = useState(determinePercentage(Object.values(props.receipts), "grocery", Object.values(props.budget)[0].grocery));
+  const [GroceryPercentage, setGroceryPercentage] = useState(determinePercentage(Object.values(props.receipts), "grocery", determineGrocery(Object.values(props.budget))));
 
   function determinePercentage(data, category, budgetValue) {
     const total = determineTotal(data, category);
     return total/budgetValue;
+  }
+
+  function determineClothes(data) {
+  console.log(data);
+    if (data.length == 0) {
+        return 1;
+    }
+    return data[0].clothes;
+  }
+
+  function determineFood(data) {
+    if (data.length == 0) {
+        return 1;
+    }
+    return data[0].food;
+  }
+
+  function determineGrocery(data) {
+    if (data.length == 0) {
+        return 1;
+    }
+    return data[0].grocery;
   }
 
   function determineTotal(data, category) {
