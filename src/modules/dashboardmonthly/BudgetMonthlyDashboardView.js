@@ -24,6 +24,13 @@ export default function BudgetMonthlyDashboardScreen(props) {
 
   const [Clothes, setClothes] = useState(["Clothes", renderProps(Object.values(props.budget)[0].clothes)]);
 
+  const [totalBudget, setTotalBudget] =useState(determineTotalBudget(Object.values(props.budget)[0]));
+
+  function determineTotalBudget(data) {
+    console.log(data);
+    const total = (parseInt(data.grocery) + parseInt(data.food) + parseInt(data.clothes));
+    return total;
+  }
   function renderProps(data) {
     return data;
   }
@@ -31,13 +38,13 @@ export default function BudgetMonthlyDashboardScreen(props) {
   return (
     <View style={styles.container}>
         <View style={styles.section}>
-          <Text size={30} bold black style={styles.dashboardTitle}>
-            Dashboard
-          </Text>
+          <Text size={30} bold black style={styles.dashboardTitle}>${totalBudget}</Text>
+                                      <Text style={styles.dashboardTitle}>Monthly Budget</Text>
           <VictoryPie
                     colorScale={["#F19820", "#03989E", "#EDCFC5"]}
+                    padAngle={2}
                     labels={() => null}
-                    innerRadius={50}
+                    innerRadius={100}
                       data={[
                         { x: Grocery[0], y: Grocery[1] },
                         { x: Food[0], y: Food[1] },
@@ -47,7 +54,7 @@ export default function BudgetMonthlyDashboardScreen(props) {
         </View>
         <View style={styles.description}>
                   <Text size={20} style={styles.title}>
-                      Monthly Budget
+                      Monthly budget by category
                   </Text>
                   <View style={styles.row}>
                   <View style={styles.rowItem}>
@@ -85,7 +92,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: colors.bluish,
+    backgroundColor: 'white',
     paddingHorizontal: 15,
     paddingTop: 20,
     flexDirection: "column",
@@ -95,6 +102,7 @@ const styles = StyleSheet.create({
     marginHorizontal: -20,
   },
   section: {
+    paddingTop: 50,
     flex: 1,
     paddingHorizontal: 20,
     justifyContent: 'center',
@@ -112,12 +120,17 @@ const styles = StyleSheet.create({
   },
   description: {
     flex: 1,
-    paddingHorizontal: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.white,
-    marginTop: 60,
-    borderRadius: 5,
+    marginTop: 135,
+    elevation: 20,
+    shadowColor: '#52006A',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    paddingVertical: 45,
+    paddingHorizontal: 25,
+    width: '100%',
+    marginVertical: 10,
   },
   titleDescription: {
     textAlign: 'center',
@@ -125,7 +138,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   dashboardTitle: {
-       top: 150,
+       top: 230,
      },
   title: {
     marginTop: 150,
