@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import RNFS from 'react-native-fs';
-import { Text, View, ScrollView, TextInput, Button,  StyleSheet, TouchableOpacity, Image } from "react-native";
+import { Text, View, ScrollView, TextInput, Button,  StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
@@ -33,6 +33,9 @@ export default function BudgetInputScreen(props) {
               console.log('Overwriting File');
               const dataJson = { [newId]: data };
               RNFS.writeFile(path, JSON.stringify(dataJson), 'utf8');
+              Alert.alert("Budget Updated", "Successfully updated budget", [{ text: "OK" }], {
+                cancelable: true,
+              });
             })
             // `unlink` will throw an error, if the item to unlink does not exist
             .catch((err) => {
@@ -52,14 +55,16 @@ export default function BudgetInputScreen(props) {
   const [show, setShow] = useState(false);
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
+    <View style={styles.card}>
+      <Text style={styles.formTitle}>INPUT MONTHLY BUDGET</Text>
       <View style={styles.row}>
         <View style={styles.date}>
-          <Text style={styles.label}>Category</Text>
+          <Text style={styles.labelTitle}>Category</Text>
           <Text style={styles.label}>Clothes:</Text>
         </View>
         <View style={styles.expenses}>
-          <Text style={styles.label}>Projected Expense</Text>
+          <Text style={styles.labelTitle}>Projected Expense</Text>
           <Controller
             control={control}
             render={({field: { onChange, onBlur, value }}) => (
@@ -120,19 +125,31 @@ export default function BudgetInputScreen(props) {
             </View>
       <View style={styles.button}>
               <Button
-                style={styles.buttonInner}
-                color
+                color="#A3B2B1"
                 title="Submit"
                 onPress={handleSubmit(onSubmit)}
               />
             </View>
-    </ScrollView>
+            </View>
+    </View>
   );
 };
 
 const path = `${RNFS.ExternalDirectoryPath}/budget.txt`;
 
 const styles = StyleSheet.create({
+  formTitle: {
+  fontSize: 20,
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingBottom: 20,
+  backgroundColor: "#03989E",
+  color: 'white',
+  paddingTop: 20,
+  padding: 10,
+  paddingHorizontal: 35,
+  paddingVertical: 50,
+  },
   item: {
     flex: 1,
     height: 120,
@@ -146,6 +163,12 @@ const styles = StyleSheet.create({
   },
   itemImage: {
     height: 35,
+  },
+  labelTitle: {
+    color: 'black',
+    margin: 20,
+    marginLeft: 0,
+    fontSize: 15
   },
   label: {
     color: 'black',
@@ -162,13 +185,17 @@ const styles = StyleSheet.create({
     marginTop: 40,
     color: 'white',
     height: 40,
-    backgroundColor: '#248cdc',
     borderRadius: 4,
   },
   container: {
     flex: 1,
     paddingTop: 10,
     padding: 10,
+    paddingHorizontal: 25,
+    paddingVertical: 45,
+    marginVertical: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   description: {
     backgroundColor: 'white',
@@ -179,10 +206,12 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: colors.bluish,
+    borderColor: 'black',
+    color: 'black',
     height: 40,
-    padding: 10,
-    borderRadius: 4,
+    padding: 0,
+    marginTop: 15,
   },
   inputFields: {
     paddingTop: 50,
@@ -205,5 +234,15 @@ const styles = StyleSheet.create({
   category: {
     flex: 1,
     paddingLeft: 5
+  },
+  card: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    paddingVertical: 45,
+    paddingHorizontal: 25,
+    width: '100%',
+    marginVertical: 10,
+    elevation: 20,
+    shadowColor: '#52006A',
   }
 });
