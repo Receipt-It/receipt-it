@@ -36,7 +36,7 @@ const headerLeftComponent = (props) => {
   )
 }
 
-const headerBackground = require('../../../assets/images/topBarBg.png');
+const headerBackground = require('../../../assets/images/peachTopBarBg.png');
 
 const StackNavigationData = [
   {
