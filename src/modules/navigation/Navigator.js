@@ -15,28 +15,39 @@ const iconGrids = require('../../../assets/images/drawer/grids.png');
 const iconPages = require('../../../assets/images/drawer/pages.png');
 const iconComponents = require('../../../assets/images/drawer/components.png');
 const iconSettings = require('../../../assets/images/drawer/settings.png');
-const iconBlog = require('../../../assets/images/drawer/blog.png')
+const iconBlog = require('../../../assets/images/drawer/blog.png');
+
+const iconDashboard = require('../../../assets/images/drawer/chart-bar-white.png');
+const iconScanner = require('../../../assets/images/drawer/camera-white.png');
+const iconSearch = require('../../../assets/images/drawer/magnify-white.png');
+const iconHistory = require('../../../assets/images/drawer/clipboard-text-clock.png');
+const iconBudget = require('../../../assets/images/drawer/currency-usd.png');
+
+const iconBudgetD = require('../../../assets/images/drawer/budget-daily.png');
+const iconBudgetW = require('../../../assets/images/drawer/budget-week.png');
+const iconBudgetM = require('../../../assets/images/drawer/calendar-month.png');
+const iconBudgetE = require('../../../assets/images/drawer/edit-outline.png');
 
 const drawerData = [
   {
-    name: 'Home',
-    icon: iconHome,
+    name: 'Dashboard',
+    icon: iconDashboard,
   },
   {
-    name: 'Calendar',
-    icon: iconCalendar,
+    name: 'Scanner',
+    icon: iconScanner,
   },
   {
-    name: 'Grids',
-    icon: iconGrids,
+    name: 'Search',
+    icon: iconSearch,
   },
   {
-    name: 'Pages',
-    icon: iconPages,
+    name: 'History',
+    icon: iconHistory,
   },
   {
-    name: 'Components',
-    icon: iconComponents,
+    name: 'Budget',
+    icon: iconBudget,
   },
 ];
 
@@ -46,14 +57,7 @@ function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props} style={{padding: 0}}>
       <View style={styles.avatarContainer}>
-        <Image
-          style={styles.avatar}
-          source={require('../../../assets/images/drawer/user.png')}
-        />
-        <View style={{ paddingLeft: 15 }}>
-          <Text style={styles.userName}>John Doe</Text>
-          <Text style={{ color: '#4BC1FD' }}>Johndoe@gmail.com</Text>
-        </View>
+          <Text style={styles.userName}>Receipt-It</Text>
       </View>
       <View style={styles.divider} />
       {drawerData.map((item, idx) => (
@@ -78,12 +82,36 @@ function CustomDrawerContent(props) {
           <View style={styles.menuLabelFlex}>
             <Image
               style={{ width: 20, height: 20}}
-              source={iconBlog}
+              source={iconBudgetD}
             />
-            <Text style={styles.menuTitle}>Blog</Text>
+            <Text style={styles.menuTitle}>Daily Budget Dashboard</Text>
           </View>
         )}
-        onPress={() => props.navigation.navigate('Blog')}
+        onPress={() => props.navigation.navigate('BudgetDaily')}
+      />
+      <DrawerItem
+        label={() => (
+          <View style={styles.menuLabelFlex}>
+            <Image
+              style={{ width: 20, height: 20}}
+              source={iconBudgetW}
+            />
+            <Text style={styles.menuTitle}>Weekly Budget Dashboard</Text>
+          </View>
+        )}
+        onPress={() => props.navigation.navigate('BudgetWeekly')}
+      />
+      <DrawerItem
+        label={() => (
+          <View style={styles.menuLabelFlex}>
+            <Image
+              style={{ width: 20, height: 20}}
+              source={iconBudgetM}
+            />
+            <Text style={styles.menuTitle}>Monthly Budget Dashboard</Text>
+          </View>
+        )}
+        onPress={() => props.navigation.navigate('BudgetMonthly')}
       />
       <View style={styles.divider} />
       <DrawerItem
@@ -91,12 +119,12 @@ function CustomDrawerContent(props) {
           <View style={styles.menuLabelFlex}>
             <Image
               style={{ width: 20, height: 20}}
-              source={iconSettings} 
+              source={iconBudgetE}
             />
-            <Text style={styles.menuTitle}>Settings</Text>
+            <Text style={styles.menuTitle}>Budget Input</Text>
           </View>
         )}
-        onPress={() => props.navigation.navigate('Calendar')}
+        onPress={() => props.navigation.navigate('BudgetInput')}
       />
     </DrawerContentScrollView>
   );
@@ -107,7 +135,7 @@ export default function App() {
   return (
     <Drawer.Navigator
       drawerStyle={{
-        backgroundColor: '#3C38B1',
+        backgroundColor: '#f8a494',
       }}
       drawerContent={props => <CustomDrawerContent {...props} />}
     >

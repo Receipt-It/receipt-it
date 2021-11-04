@@ -53,7 +53,7 @@ const StackNavigationData = [
   {
     name: 'Dashboard',
     component: DashboardScreen,
-    headerLeft: headerLeftComponent,
+    headerLeft: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -64,7 +64,7 @@ const StackNavigationData = [
   {
     name: 'Scanner',
     component: ReceiptInputScreen,
-    headerLeft: headerLeftComponent,
+    headerLeft: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -75,7 +75,7 @@ const StackNavigationData = [
   {
     name: 'Search',
     component: SearchScreen,
-    headerLeft: headerLeftComponent,
+    headerLeft: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -86,7 +86,7 @@ const StackNavigationData = [
   {
     name: 'History',
     component: ReceiptHistoryScreen,
-    headerLeft: headerLeftComponent,
+    headerLeft: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -97,7 +97,7 @@ const StackNavigationData = [
   {
     name: 'BudgetInput',
     component: BudgetInputScreen,
-    headerLeft: null,
+    headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -108,7 +108,7 @@ const StackNavigationData = [
   {
       name: 'BudgetMonthly',
       component: BudgetMonthlyDashboardScreen,
-      headerLeft: null,
+      headerLeft: headerLeftComponent,
       headerBackground: { source: headerBackground },
       headerTitleStyle: {
         fontFamily: fonts.primaryRegular,
@@ -119,7 +119,7 @@ const StackNavigationData = [
   {
         name: 'BudgetWeekly',
         component: BudgetWeeklyDashboardScreen,
-        headerLeft: null,
+        headerLeft: headerLeftComponent,
         headerBackground: { source: headerBackground },
         headerTitleStyle: {
           fontFamily: fonts.primaryRegular,
@@ -130,7 +130,7 @@ const StackNavigationData = [
   {
           name: 'BudgetDaily',
           component: BudgetDailyDashboardScreen,
-          headerLeft: null,
+          headerLeft: headerLeftComponent,
           headerBackground: { source: headerBackground },
           headerTitleStyle: {
             fontFamily: fonts.primaryRegular,
