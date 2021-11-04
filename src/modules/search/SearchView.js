@@ -9,13 +9,14 @@ import {
   ImageBackground,
   TextInput,
   Image,
-  ScrollView
+  ScrollView,
+  Button
 } from 'react-native';
 import { useForm, Controller } from "react-hook-form";
 import { Picker } from '@react-native-picker/picker';
 import Lightbox from 'react-native-lightbox';
 
-import { Card, ListItem, Button, Icon, SearchBar } from 'react-native-elements';
+import { Card, ListItem, Icon, SearchBar } from 'react-native-elements';
 
 import { fonts, colors } from '../../styles';
 import { Text } from '../../components/StyledText';
@@ -94,6 +95,8 @@ export default function SearchScreen(props) {
         contentContainerStyle={{ paddingBottom: 20 }}
       >
     <View>
+    <View style={styles.card}>
+                    <Text style={styles.searchTitle}>SEARCH RECEIPTS</Text>
                     <View style={styles.rowContainer}>
                     <Text>
                     Search by company/description:
@@ -144,7 +147,7 @@ export default function SearchScreen(props) {
                 </View>
                 <View style={styles.rowContainer}>
                 <View style={styles.date}>
-                <Button onPress={() => setShow(!show)} title={`Choose Date`} />
+                <Button color= '#f8a494' onPress={() => setShow(!show)} title={`Choose Date`} />
                 <Controller
                             control={control}
                             render={({field: { onChange, value }}) => (
@@ -166,19 +169,20 @@ export default function SearchScreen(props) {
                           />
                 </View>
                 <View style={styles.date}>
-                                      <Button style={[styles.button, {flexBasis: '47%'}]}
+                                      <Button color='#A3B2B1' style={[styles.button, {flexBasis: '47%'}]}
                                               primary
                                               rounded
                                               title="Clear Date"
                                               onPress={() => setClear(!clear)} />
                                               </View>
                           <View style={styles.date}>
-                      <Button style={[styles.button, {flexBasis: '47%'}]}
+                      <Button color="#03989E" style={[styles.button, {flexBasis: '47%'}]}
                               primary
                               rounded
                               title="Search"
                               onPress={handleSubmit(onSubmit)} />
                               </View>
+                      </View>
                       </View>
         <View style={styles.sectionLarge}>
         <View>
@@ -218,10 +222,22 @@ const dropdownItems = [
 ]
 
 const styles = StyleSheet.create({
+  searchTitle: {
+  fontSize: 20,
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingBottom: 20,
+  backgroundColor: "#F19820",
+  color: 'white',
+  paddingTop: 20,
+  marginBottom: 20,
+  //padding: 10,
+  paddingHorizontal: 80,
+  },
   container: {
       flex: 1,
       backgroundColor: colors.bluish,
-      paddingHorizontal: 15,
+      //paddingHorizontal: 15,
       paddingTop: 20,
     },
   bgImage: {
@@ -231,6 +247,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 8,
     marginBottom: 8,
+    backgroundColor: "#A3B2B1",
   },
   date: {
       flex: 1,
@@ -266,7 +283,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   picker: {
-      backgroundColor: 'white',
+      backgroundColor: colors.blueish,
       borderColor: 'black',
       width:'100%',
       borderWidth: 0.5,
@@ -283,7 +300,7 @@ const styles = StyleSheet.create({
       margin: 12,
       padding: 10,
       color: 'black',
-      backgroundColor: 'white',
+      backgroundColor: colors.bluish,
     },
   image: {
       height: 100,
@@ -299,4 +316,15 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 5,
     },
+  card: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    paddingVertical: 45,
+    paddingHorizontal: 15,
+    width: '90%',
+    marginVertical: 5,
+    marginHorizontal: 20,
+    elevation: 10,
+    shadowColor: '#52006A',
+  }
 });
