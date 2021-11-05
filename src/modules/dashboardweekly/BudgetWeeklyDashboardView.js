@@ -38,19 +38,23 @@ export default function BudgetWeeklyDashboardScreen(props) {
     if (data.length == 0) {
         return 1;
     }
-    return (data[0].food/4).toFixed(2);
+    const total = (parseInt(data[0].food));
+    console.log((total/4).toFixed(2));
+    return (total/4).toFixed(2);
   }
   function determineTotalGrocery(data) {
       if (data.length == 0) {
           return 1;
       }
-      return (data[0].grocery/4).toFixed(2);
+      const total = (parseInt(data[0].grocery));
+      return (total/4).toFixed(2);
   }
   function determineTotalClothes(data) {
       if (data.length == 0) {
           return 1;
       }
-      return (data[0].clothes/4).toFixed(2);
+     const total = (parseInt(data[0].clothes));
+     return (total/4).toFixed(2);
   }
 
   return (
@@ -64,9 +68,9 @@ export default function BudgetWeeklyDashboardScreen(props) {
                     labels={() => null}
                     innerRadius={100}
                       data={[
-                        { x: Grocery[0], y: Grocery[1] },
-                        { x: Food[0], y: Food[1] },
-                        { x: Clothes[0], y: Clothes[1] }
+                        { x: Grocery[0], y: parseInt(Grocery[1]) },
+                        { x: Food[0], y: parseInt(Food[1]) },
+                        { x: Clothes[0], y: parseInt(Clothes[1]) }
                       ]}
                     />
         </View>

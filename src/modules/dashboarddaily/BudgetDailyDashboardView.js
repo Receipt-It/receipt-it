@@ -38,19 +38,19 @@ export default function BudgetDailyDashboardScreen(props) {
     if (data.length == 0) {
         return 1;
     }
-    return (data[0].food/30).toFixed(2);
+    return (parseInt(data[0].food)/30).toFixed(2);
   }
   function determineTotalGrocery(data) {
       if (data.length == 0) {
           return 1;
       }
-      return (data[0].grocery/30).toFixed(2);
+      return (parseInt(data[0].grocery)/30).toFixed(2);
   }
   function determineTotalClothes(data) {
       if (data.length == 0) {
           return 1;
       }
-      return (data[0].clothes/30).toFixed(2);
+      return (parseInt(data[0].clothes)/30).toFixed(2);
   }
 
   return (
@@ -64,9 +64,9 @@ export default function BudgetDailyDashboardScreen(props) {
                     labels={() => null}
                     innerRadius={100}
                       data={[
-                        { x: Grocery[0], y: Grocery[1] },
-                        { x: Food[0], y: Food[1] },
-                        { x: Clothes[0], y: Clothes[1] }
+                        { x: Grocery[0], y: parseInt(Grocery[1]) },
+                        { x: Food[0], y: parseInt(Food[1]) },
+                        { x: Clothes[0], y: parseInt(Clothes[1]) }
                       ]}
                     />
         </View>

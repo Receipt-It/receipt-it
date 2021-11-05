@@ -39,19 +39,19 @@ export default function BudgetMonthlyDashboardScreen(props) {
     if (data.length == 0) {
         return 1;
     }
-    return data[0].food;
+    return parseInt(data[0].food);
   }
   function determineTotalGrocery(data) {
       if (data.length == 0) {
           return 1;
       }
-      return data[0].grocery;
+      return parseInt(data[0].grocery);
   }
   function determineTotalClothes(data) {
       if (data.length == 0) {
           return 1;
       }
-      return data[0].clothes;
+      return parseInt(data[0].clothes);
   }
 
   function renderProps(data) {
