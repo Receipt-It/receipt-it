@@ -3,7 +3,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import RNFS from 'react-native-fs';
 import Permissions from 'react-native-permissions';
-import { Text, View, ScrollView, TextInput, Button,  StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, ScrollView, TextInput, Button,  StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { Icon, Image } from 'react-native-elements';
 import { useForm, Controller } from "react-hook-form";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -70,6 +70,9 @@ export default function ReceiptInputScreen() {
         parsedData[newId].imagePath = `${RNFS.ExternalDirectoryPath}/${newId}.png`;
 
         RNFS.writeFile(path, JSON.stringify(parsedData), 'utf8');
+        Alert.alert("Added Receipt", "Successfully added receipt", [{ text: "OK" }], {
+                                cancelable: true,
+                });
         RNFS.moveFile(imagePath, parsedData[newId].imagePath);
 
         // reset form 
