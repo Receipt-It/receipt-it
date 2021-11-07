@@ -77,8 +77,12 @@ export default function SearchScreen(props) {
                 //console.log(dayjs(date).format('DD/MM/YYYY'));
         }
     if (search != "") {
-            filteredResults = filteredResults.filter(result => result.companyName.toLowerCase().includes(search.toLowerCase()));
             //console.log(search);
+            if (filteredResults.filter(result => result.companyName.toLowerCase().includes(search.toLowerCase())).length == 0) {
+                filteredResults =filteredResults.filter(result => result.description.toLowerCase().includes(search.toLowerCase()));
+            } else {
+                filteredResults = filteredResults.filter(result => result.companyName.toLowerCase().includes(search.toLowerCase()));
+            }
     }
     if (category != "" && category != "none") {
                 filteredResults = filteredResults.filter(result => result.category === category);
