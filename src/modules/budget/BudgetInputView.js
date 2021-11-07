@@ -47,6 +47,9 @@ export default function BudgetInputScreen(props) {
 
         const dataJson = { [newId]: data };
         RNFS.writeFile(path, JSON.stringify(dataJson), 'utf8');
+                Alert.alert("Added Receipt", "Successfully added receipt", [{ text: "OK" }], {
+                                        cancelable: true,
+                        });
       })
 
   };

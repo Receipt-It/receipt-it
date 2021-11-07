@@ -92,6 +92,9 @@ export default function ReceiptInputScreen() {
         dataJson[newId].imagePath = `${RNFS.ExternalDirectoryPath}/${newId}.png`;
 
         RNFS.writeFile(path, JSON.stringify(dataJson), 'utf8');
+        Alert.alert("Added Receipt", "Successfully added receipt", [{ text: "OK" }], {
+                                cancelable: true,
+                });
         RNFS.moveFile(imagePath, dataJson[newId].imagePath);
 
         // reset form 

@@ -61,3 +61,4 @@ jest_coverage
 # CocoaPods
 /ios/Pods/
 android/gradle.properties
+android/app/receiptit-upload-key.jks
