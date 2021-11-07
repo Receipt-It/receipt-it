@@ -246,12 +246,12 @@ export default function ReceiptInputScreen() {
         scannerShow ? (
           <View style={scannerStyles.bottomButtons}>
             <View style={scannerStyles.cancel}>
-              <Button title="Cancel" onPress={openScanner} />
+              <Button color='#A3B2B1' title="Cancel" onPress={openScanner} />
             </View>
             {
               isCropping ? (
                 <View style={scannerStyles.confirm}>
-                  <Button title="Confirm" onPress={onCropImage} />
+                  <Button color="#03989E" title="Confirm" onPress={onCropImage} />
                 </View>
               ) :
                 <View />
