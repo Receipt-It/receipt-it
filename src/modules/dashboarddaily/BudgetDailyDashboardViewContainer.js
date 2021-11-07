@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { compose, lifecycle } from 'recompose';
 
 import BudgetDailyDashboardScreen from './BudgetDailyDashboardView';
-import { loadBudget } from '../dashboard/DashboardState';
+import { loadBudget, refreshBudget } from '../dashboard/DashboardState';
 import { loadReceipts } from '../receiptHistory/ReceiptHistoryState';
 
 export default compose(
@@ -16,6 +16,7 @@ export default compose(
     dispatch => ({
       loadBudget: () => dispatch(loadBudget()),
       loadReceipts: () => dispatch(loadReceipts()),
+      refreshBudget: () => dispatch(refreshBudget()),
     }),
   ),
   lifecycle({

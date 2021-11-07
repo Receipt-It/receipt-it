@@ -7,6 +7,7 @@ import {
   ImageBackground,
   ScrollView,
   Image,
+  RefreshControl,
 } from 'react-native';
 import {ProgressBar} from '@react-native-community/progress-bar-android';
 import { Card } from 'react-native-elements';
@@ -24,6 +25,8 @@ export default function BudgetWeeklyDashboardScreen(props) {
   const [Clothes, setClothes] = useState(["Clothes", determineTotalClothes(Object.values(props.budget))]);
 
   const [totalBudget, setTotalBudget] = useState(determineTotalBudget(Object.values(props.budget)));
+
+  const [didRefresh, setDidRefresh] = useState(false);
 
   function determineTotalBudget(data) {
     console.log(data);
@@ -57,11 +60,35 @@ export default function BudgetWeeklyDashboardScreen(props) {
      return (total/4).toFixed(2);
   }
 
+  const onRefresh = () => {
+    // refresh receipts
+    props.refreshBudget()
+      .then(() => {
+            setDidRefresh(!didRefresh);
+        })
+      .catch((err) => {
+            console.log(err);
+      })
+  }
+
+  React.useEffect(() => {
+        setClothes(["Clothes", determineTotalClothes(Object.values(props.budget))]);
+        setGrocery(["Grocery", determineTotalGrocery(Object.values(props.budget))]);
+        setFood(["Food", determineTotalFood(Object.values(props.budget))]);
+        setTotalBudget(determineTotalBudget(Object.values(props.budget)))
+    }, [didRefresh])
+
   return (
+    <ScrollView
+    refreshControl={
+                <RefreshControl
+                  refreshing={Object.entries(props.budget).length == 0 && props.isBudgetLoading}
+                  onRefresh={onRefresh}
+                />}>
     <View style={styles.container}>
         <View style={styles.section}>
           <Text size={30} bold black style={styles.dashboardTitle}>${totalBudget}</Text>
-                                      <Text style={styles.dashboardTitle}>Weekly Budget</Text>
+                                      <Text style={styles.dashboardSubTitle}>Weekly Budget</Text>
           <VictoryPie
                     colorScale={["#F19820", "#03989E", "#EDCFC5"]}
                     padAngle={2}
@@ -94,6 +121,7 @@ export default function BudgetWeeklyDashboardScreen(props) {
                   </View>
          </View>
     </View>
+    </ScrollView>
   );
 }
 
@@ -124,11 +152,11 @@ const styles = StyleSheet.create({
     marginHorizontal: -20,
   },
   section: {
-    paddingTop: 50,
     flex: 1,
     paddingHorizontal: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: -150,
   },
   sectionLarge: {
     flex: 2,
@@ -145,13 +173,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 135,
-    elevation: 20,
+    elevation: 10,
     shadowColor: '#52006A',
     backgroundColor: 'white',
     borderRadius: 8,
-    paddingVertical: 45,
     paddingHorizontal: 25,
     width: '100%',
+    height: 200,
     marginVertical: 10,
   },
   titleDescription: {
@@ -160,8 +188,15 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   dashboardTitle: {
-       top: 230,
+       marginBottom: -100,
+       color: 'black',
+       top: 130,
      },
+    dashboardSubTitle: {
+     color: 'black',
+     marginTop: 230,
+     marginBottom: -230,
+    },
   title: {
     marginTop: 150,
     color: 'black',

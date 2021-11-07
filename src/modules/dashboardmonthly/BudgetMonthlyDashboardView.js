@@ -7,6 +7,7 @@ import {
   ImageBackground,
   ScrollView,
   Image,
+  RefreshControl,
 } from 'react-native';
 import {ProgressBar} from '@react-native-community/progress-bar-android';
 import { Card } from 'react-native-elements';
@@ -26,8 +27,9 @@ export default function BudgetMonthlyDashboardScreen(props) {
 
   const [totalBudget, setTotalBudget] = useState(determineTotalBudget(Object.values(props.budget)));
 
+  const [didRefresh, setDidRefresh] = useState(false);
+
   function determineTotalBudget(data) {
-    console.log(data);
     if (data.length == 0) {
             return 1;
     }
@@ -58,11 +60,35 @@ export default function BudgetMonthlyDashboardScreen(props) {
     return data;
   }
 
+  const onRefresh = () => {
+    // refresh receipts
+    props.refreshBudget()
+      .then(() => {
+            setDidRefresh(!didRefresh);
+        })
+      .catch((err) => {
+            console.log(err);
+      })
+  }
+
+  React.useEffect(() => {
+        setClothes(["Clothes", determineTotalClothes(Object.values(props.budget))]);
+        setGrocery(["Grocery", determineTotalGrocery(Object.values(props.budget))]);
+        setFood(["Food", determineTotalFood(Object.values(props.budget))]);
+        setTotalBudget(determineTotalBudget(Object.values(props.budget)))
+    }, [didRefresh])
+
   return (
+    <ScrollView
+    refreshControl={
+            <RefreshControl
+              refreshing={Object.entries(props.budget).length == 0 && props.isBudgetLoading}
+              onRefresh={onRefresh}
+            />}>
     <View style={styles.container}>
         <View style={styles.section}>
           <Text size={30} bold black style={styles.dashboardTitle}>${totalBudget}</Text>
-                                      <Text style={styles.dashboardTitle}>Monthly Budget</Text>
+                                      <Text style={styles.dashboardSubTitle}>Monthly Budget</Text>
           <VictoryPie
                     colorScale={["#F19820", "#03989E", "#EDCFC5"]}
                     padAngle={2}
@@ -95,6 +121,7 @@ export default function BudgetMonthlyDashboardScreen(props) {
                   </View>
          </View>
     </View>
+    </ScrollView>
   );
 }
 
@@ -125,11 +152,11 @@ const styles = StyleSheet.create({
     marginHorizontal: -20,
   },
   section: {
-    paddingTop: 50,
     flex: 1,
     paddingHorizontal: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: -150,
   },
   sectionLarge: {
     flex: 2,
@@ -146,13 +173,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 135,
-    elevation: 20,
+    elevation: 10,
     shadowColor: '#52006A',
     backgroundColor: 'white',
     borderRadius: 8,
-    paddingVertical: 45,
     paddingHorizontal: 25,
     width: '100%',
+    height: 200,
     marginVertical: 10,
   },
   titleDescription: {
@@ -161,12 +188,18 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   dashboardTitle: {
-       top: 230,
+       marginBottom: -100,
+       top: 130,
      },
   title: {
-    marginTop: 150,
+    marginTop: 200,
     color: 'black',
   },
+    dashboardSubTitle: {
+     color: 'black',
+     marginTop: 230,
+     marginBottom: -230,
+    },
   categories: {
       left: -100,
     },
