@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   ImageBackground,
   ScrollView,
+  RefreshControl,
+  Dimensions
 } from 'react-native';
 import {ProgressBar} from '@react-native-community/progress-bar-android';
 import { Card } from 'react-native-elements';
@@ -27,6 +29,8 @@ export default function DashboardScreen(props) {
   const [FoodPercentage, setFoodPercentage] = useState(determinePercentage(Object.values(props.receipts), "food", determineFood(Object.values(props.budget))));
 
   const [GroceryPercentage, setGroceryPercentage] = useState(determinePercentage(Object.values(props.receipts), "grocery", determineGrocery(Object.values(props.budget))));
+
+  const [didRefresh, setDidRefresh] = useState(false);
 
   function determinePercentage(data, category, budgetValue) {
     const total = determineTotal(data, category);
@@ -73,12 +77,49 @@ export default function DashboardScreen(props) {
     return total;
   }
 
+  const onRefresh = () => {
+    // refresh receipts
+    props.refreshReceipts()
+      .then(() => {
+            props.refreshBudget()
+                  .then(() => {
+                        setDidRefresh(!didRefresh);
+                    })
+                  .catch((err) => {
+                        console.log(err);
+                  })
+        })
+      .catch((err) => {
+            console.log(err);
+      })
+  }
+
+  React.useEffect(() => {
+        setClothes(["Clothes", determineTotal(Object.values(props.receipts), "clothes")]);
+        setGrocery(["Grocery", determineTotal(Object.values(props.receipts), "grocery")]);
+        setFood(["Food", determineTotal(Object.values(props.receipts), "food")]);
+        setClothesPercentage(determinePercentage(Object.values(props.receipts), "clothes", determineClothes(Object.values(props.budget))));
+        setGroceryPercentage(determinePercentage(Object.values(props.receipts), "grocery", determineGrocery(Object.values(props.budget))));
+        setFoodPercentage(determinePercentage(Object.values(props.receipts), "food", determineFood(Object.values(props.budget))));
+        setTotalExpenses(determineTotalCost(Object.values(props.receipts)))
+    }, [didRefresh])
+
   return (
     <View style={styles.container}>
+    <ScrollView
+      fadingEdgeLength={200}
+      refreshControl={
+        <RefreshControl
+          refreshing={Object.entries(props.receipts).length === 0 && Object.entries(props.budget).length == 0 && props.isLoading && props.isBudgetLoading}
+          onRefresh={onRefresh}
+        />}
+        >
         <View style={styles.section}>
+        <Text size={25} style={styles.dTitle}>EXPENSE DASHBOARD</Text>
         <Text size={30} bold black style={styles.dashboardTitle}>${TotalExpenses}</Text>
-                  <Text style={styles.dashboardTitle}>Total Expenses</Text>
+        <Text style={styles.dashboardSubTitle}>Total Expenses</Text>
           <VictoryPie
+                    disableInlineStyles
                     colorScale={["#F19820", "#03989E", "#EDCFC5"]}
                     padAngle={2}
                     labels={() => null}
@@ -97,9 +138,11 @@ export default function DashboardScreen(props) {
                   <View style={styles.row}>
                   <View style={styles.rowItem}>
                   <VictoryLegend x={25} y={25}
+                    disableInlineStyles
+                    padding={{top: 0, bottom: 0, right: 20, left: 20}}
                     orientation="vertical"
                     gutter={20}
-                    rowGutter={{ top: 0, bottom: 3 }}
+                    //rowGutter={{ top: 0, bottom: 3 }}
                     data={[
                         { name: `${Grocery[0]} $${Grocery[1]}`, symbol: { fill: "#F19820" }, labels: { fill: "black" }  },
                         { name: `${Food[0]} $${Food[1]}`, symbol: { fill: "#03989E" }, labels: { fill: "black" }  },
@@ -131,27 +174,42 @@ export default function DashboardScreen(props) {
                           />
                   </View>
                   </View>
-
                   </View>
          </View>
+    </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  dTitle: {
+  fontSize: 20,
+  //alignItems: 'center',
+  //justifyContent: 'center',
+  paddingBottom: 20,
+  backgroundColor: "#F19820",
+  color: 'white',
+  paddingTop: 20,
+  marginTop: 20,
+  marginBottom: 0,
+  paddingHorizontal: 20,
+  elevation: 10,
+  shadowColor: '#52006A',
+  marginBottom: -30,
+  },
   container: {
-    flex: 1,
+    //flex: 1,
     backgroundColor: 'white',
     paddingHorizontal: 15,
     flexDirection: "column",
+    //height: Dimensions.get('window').height
   },
   bgImage: {
     flex: 1,
     marginHorizontal: -20,
   },
   section: {
-    paddingTop: 80,
-    flex: 1,
+    flex: 2,
     paddingHorizontal: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -170,15 +228,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 135,
+    marginTop: -30,
     elevation: 20,
     shadowColor: '#52006A',
     backgroundColor: 'white',
     borderRadius: 8,
-    paddingVertical: 45,
-    paddingHorizontal: 25,
-    width: '100%',
+    //paddingVertical: 20,
+    paddingHorizontal: 15,
     marginVertical: 10,
+    marginHorizontal: 20,
+    width: '90%',
+    height: 200,
   },
   titleDescription: {
     textAlign: 'center',
@@ -186,15 +246,21 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   dashboardTitle: {
-       top: 230,
+       position: 'absolute',
+       top: 250,
+       color: 'black',
+       marginTop: 0,
      },
+  dashboardSubTitle: {
+       //position: 'absolute',
+       top: 220,
+       color: 'black',
+       marginTop: 0,
+  },
   title: {
-    marginTop: 150,
+    marginTop: 170,
     color: 'black',
   },
-  categories: {
-      left: -100,
-    },
   price: {
     marginBottom: 5,
   },
