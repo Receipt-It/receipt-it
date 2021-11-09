@@ -23,6 +23,8 @@ import { Text } from '../../components/StyledText';
 import { Dropdown } from '../../components';
 import * as RNFS from 'react-native-fs';
 
+const noReceiptImage = require('../../../assets/images/no-receipt.png');
+
 export default function SearchScreen(props) {
 
     const [search, setSearch] = useState("");
@@ -192,22 +194,40 @@ export default function SearchScreen(props) {
         <View>
                    {searchResults.map((results) => {
                                   const date = new Date(results.date);
+                                  const imageUri = `file://${results.imagePath}`;
                                   return (
-                                    <Card>
-                                        <Card.Title>{date.toDateString()} {results.companyName}</Card.Title>
-                                        <Card.Divider />
-                                        <View style={styles.rowContainer}>
-                                        <Lightbox activeProps={{width: '100%', height: '100%'}}>
-                                          <Image style={styles.image} source={{ uri: `file://${results.imagePath}` }}
-                                          />
-                                        </Lightbox>
-                                        <Text>
-                                           {results.description}
-                                        </Text>
+                                    <View style={styles.cardContainer}>
+                                        <View style={styles.cardTitle}>
+                                            <View style={styles.cardTitleText}>
+                                                <Text>{date.toDateString()} </Text>
+                                                <Text>{results.companyName}</Text>
+                                            </View>
                                         </View>
-                                       <Card.Divider/>
-                                       <Text>{results.category} ${results.totalExpenses}</Text>
-                                    </Card>
+                                        <View style={styles.cardDivider} />
+                                        <View style={styles.cardBody}>
+                                        <View style={styles.cardImageContainer}>
+                                            {
+                                                results.imagePath !== ''? (
+                                                    <Lightbox activeProps={{width: '100%', height: '100%'}}>
+                                                        <Image
+                                                            source={{ uri: imageUri }}
+                                                            style={styles.cardImage}
+                                                        />
+                                                    </Lightbox>
+                                                ) : (
+                                                    <Image
+                                                        source={noReceiptImage}
+                                                        style={styles.cardImage}
+                                                    />
+                                                )
+                                            }
+                                        </View>
+                                            <View style={styles.cardBodyTextContainer}>
+                                                <Text>Category: {results.category}</Text>
+                                                <Text>Total Expenses: ${results.totalExpenses}</Text>
+                                            </View>
+                                        </View>
+                                     </View>
                      );
                     })
                    }
@@ -226,6 +246,44 @@ const dropdownItems = [
 ]
 
 const styles = StyleSheet.create({
+  cardContainer: {
+    margin: 20,
+    padding: 10,
+    borderColor: '#e3dfe0',
+    borderWidth: 0.2,
+    elevation: 5,
+  },
+  cardTitle: {
+    flexDirection: 'row',
+    padding: 5,
+  },
+  cardTitleText: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  cardTitleEdit: {
+   flex: 1,
+   alignSelf: 'flex-end',
+  },
+  cardDivider: {
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
+    marginRight: 20,
+    marginLeft: 20,
+  },
+  cardBody: {
+    width: '100%',
+    padding: 10,
+  },
+  cardImageContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardImage: {
+    height: 200,
+    width: 200,
+  },
   searchTitle: {
   fontSize: 20,
   alignItems: 'center',
