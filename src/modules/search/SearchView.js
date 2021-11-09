@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -42,6 +42,8 @@ export default function SearchScreen(props) {
       category: "none"
     }
   });
+
+  const searchInput = useRef();
 
   const [show, setShow] = useState(false);
 
@@ -89,13 +91,14 @@ export default function SearchScreen(props) {
                 filteredResults = filteredResults.filter(result => result.companyName.toLowerCase().includes(search.toLowerCase()));
             }
     }
-    if (category != "" && category != "none") {
+    if (category != "" && category != "None") {
                 filteredResults = filteredResults.filter(result => result.category === category);
                 console.log('category is not none');
                 //console.log(category);
     }
     console.log(filteredResults);
-    setSearchResults(filteredResults);
+    setSearchResults(filteredResults)
+    //console.log(setSearchResults(filteredResults));
   }, [search, date, category]);
 
   return (
@@ -120,6 +123,7 @@ export default function SearchScreen(props) {
                          onBlur={onBlur}
                          onChangeText={input => onChange(input)}
                          value={value}
+                         ref={searchInput}
                        />
                      )}
                      name="search"
@@ -133,7 +137,7 @@ export default function SearchScreen(props) {
                 <View style={styles.rowContainer}>
                    <Controller
                              control={control}
-                             value="none"
+                             value="None"
                              render={({field: { onChange, value }}) => (
                                <Picker
                                  style={styles.picker}
