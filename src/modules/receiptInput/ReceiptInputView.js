@@ -11,7 +11,7 @@ import {Picker} from '@react-native-picker/picker';
 import RNDocumentScanner  from "react-native-document-scanner";
 import { colors } from '../../styles';
 
-export default function ReceiptInputScreen() {
+export default function ReceiptInputScreen(props) {
 
   const [calendarShow, setcalendarShow] = useState(false);
   const [scannerShow, setScannerShow] = useState(false);
@@ -31,7 +31,7 @@ export default function ReceiptInputScreen() {
       totalExpenses: "",
       date: new Date(),
       description: "",
-      category: 'grocery'
+      category: 'Grocery'
     }
   });
 
@@ -61,6 +61,8 @@ export default function ReceiptInputScreen() {
         setImagePath(imageUri.image);
         setScannerShow(!scannerShow);
         setIsCropping(false);
+
+        Alert.alert("Added image", "Successfully added image", [{ text: "OK" }], {cancelable: true});
       });
   }
 
@@ -77,8 +79,6 @@ export default function ReceiptInputScreen() {
 
           parsedData[newId] = data;
 
-          RNFS.writeFile(path, JSON.stringify(parsedData), 'utf8');
-
           if (imagePath !== '') {
             parsedData[newId].imagePath = `${RNFS.ExternalDirectoryPath}/${newId}.png`;
             RNFS.moveFile(imagePath, parsedData[newId].imagePath);
@@ -87,7 +87,12 @@ export default function ReceiptInputScreen() {
             parsedData[newId].imagePath = '';
           }
 
+          RNFS.writeFile(path, JSON.stringify(parsedData), 'utf8');
+
           Alert.alert("Added Receipt", "Successfully added receipt", [{ text: "OK" }], {cancelable: true});
+
+          // refresh the history page
+          props.refreshReceipts();
 
           // reset form 
           reset({
@@ -105,8 +110,6 @@ export default function ReceiptInputScreen() {
 
           const dataJson = { [newId]: data };
 
-          RNFS.writeFile(path, JSON.stringify(dataJson), 'utf8');
-
           if (imagePath !== '') {
             dataJson[newId].imagePath = `${RNFS.ExternalDirectoryPath}/${newId}.png`;
             RNFS.moveFile(imagePath, dataJson[newId].imagePath);
@@ -114,7 +117,13 @@ export default function ReceiptInputScreen() {
             dataJson[newId].imagePath = '';
           }
 
+          RNFS.writeFile(path, JSON.stringify(dataJson), 'utf8');
+
+
           Alert.alert("Added Receipt", "Successfully added receipt", [{ text: "OK" }], {cancelable: true});
+
+          // refresh the history page
+          props.refreshReceipts();
 
           // reset form 
           reset({

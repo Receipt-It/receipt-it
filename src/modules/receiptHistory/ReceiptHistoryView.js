@@ -1,67 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Alert } from 'react-native';
-import Permissions from 'react-native-permissions';
+import React, { useState } from 'react';
+import { View, Text, FlatList, StyleSheet, Alert, TouchableOpacity, Modal } from 'react-native';
 import RNFS from 'react-native-fs';
 import { Image } from 'react-native-elements';
-import {
-  MenuProvider,
-  Menu,
-  MenuTrigger,
-  MenuOptions,
-  MenuOption,
-} from 'react-native-popup-menu';
+
+const noReceiptImage = require('../../../assets/images/no-receipt.png');
 
 export default function ReceiptHistoryScreen(props) {
-  
-  const [storageAllowed, setStorageAllowed] = useState(false);
 
-  useEffect(() => {
-    async function request() {
-      const result = await Permissions.requestMultiple(['android.permission.READ_EXTERNAL_STORAGE', 'android.permission.WRITE_EXTERNAL_STORAGE']);
+  const [showImage, setShowImage] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('')
 
-      if (result["android.permission.READ_EXTERNAL_STORAGE"] ==='granted' && result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted') setStorageAllowed(true);
-    }
-
-    request();
-  }, [])
-
-  const onEditReceipt = (key) => {
-    Alert.alert('Edit Receipt', key,  [{ text: "OK" }], {cancelable: true});
+  const onCloseImage = () => {
+    setShowImage(!showImage);
+    setSelectedImage('');
   }
 
+  const onShowImage = (uri) => {
+    setShowImage(!showImage);
+    setSelectedImage(uri)
+  }
+  
   const onDeleteReceipt = (key) => {
-    if (storageAllowed) {
-      // try to read the current data file
-      RNFS.readFile(path, 'utf8')
-        // add the new data 
-        .then((currentData) => {
-          const parsedData = JSON.parse(currentData);
+    // try to read the current data file
+    RNFS.readFile(path, 'utf8')
+      // add the new data 
+      .then((currentData) => {
+        const parsedData = JSON.parse(currentData);
 
-          console.log(parsedData);
+        delete parsedData[key];        
 
-          delete parsedData[key];
-          
-          console.log(parsedData)
-        
+        RNFS.unlink(path)
+        .then(() => {
+          RNFS.writeFile(path, JSON.stringify(parsedData), 'utf8')
+            .then(() => {
+              Alert.alert("Receipt Deleted", "Successfully deleted receipt", [{ text: "OK" }], {cancelable: true});
 
-          RNFS.unlink(path)
-          .then(() => {
-            RNFS.writeFile(path, JSON.stringify(parsedData), 'utf8')
-              .then(() => {
-                Alert.alert("Receipt Deleted", "Successfully deleted receipt", [{ text: "OK" }], {cancelable: true});
-
-                props.refreshReceipts()
-              })
-          });
-        })
-    }
+              props.refreshReceipts()
+            })
+        });
+      })
   }
 
   const onRenderItems = ({ item }) => {
     const [key, value] = item;
   
     const date = new Date(value.date);
-
+    const imageUri = `file://${value.imagePath}`;
+    
     return (
       <View key={key} style={styles.cardContainer}>
         <View style={styles.cardTitle}>
@@ -69,22 +54,30 @@ export default function ReceiptHistoryScreen(props) {
             <Text>{date.toDateString()}</Text>
             <Text>{value.companyName}</Text>
           </View>
-          <Menu onSelect={menuValue => menuValue === 'edit' ? onEditReceipt(key) : onDeleteReceipt(key)}>
-            <MenuTrigger text='Edit' />
-            <MenuOptions>
-              <MenuOption value='edit' text='Edit Receipt' />
-              <MenuOption value='delete' text='Delete Receipt' />
-            </MenuOptions>
-          </Menu>
+          <TouchableOpacity
+            onPress={() => onDeleteReceipt(key)}
+          >
+            <Text>Delete</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.cardDivider} />
         <View style={styles.cardBody}>
-          <View>
-            <Image
-              source={{ uri: `file://${value.imagePath}`}}
-              style={styles.cardImage}
-              resizeMode='stretch'
-            />
+          <View style={styles.cardImageContainer}>
+            {
+              value.imagePath !== '' ? (
+                <Image
+                  source={{ uri: imageUri }}
+                  style={styles.cardImage}
+                  onPress={() => onShowImage(imageUri)}
+                  resizeMode='stretch'
+                />
+              ) : (
+                <Image
+                  source={noReceiptImage}
+                  style={styles.cardImage}
+                />
+              )
+            }
           </View>
           <View style={styles.cardBodyTextContainer}>
             <Text>Category: {value.category}</Text>
@@ -96,7 +89,7 @@ export default function ReceiptHistoryScreen(props) {
   }
 
   return (
-    <MenuProvider>
+    <>
       <FlatList
         style={styles.container}
         onRefresh={props.refreshReceipts}
@@ -105,7 +98,18 @@ export default function ReceiptHistoryScreen(props) {
         renderItem={onRenderItems}
         keyExtractor={item => item[0]}
       />
-    </MenuProvider>
+      <Modal
+        visible={showImage}
+        onRequestClose={onCloseImage}
+      >
+        <Image
+          source={{ uri: selectedImage }}
+          style={styles.modalImage}
+          resizeMode='contain'
+        />
+      </Modal>
+    </>
+
   );
 }
 const path = `${RNFS.ExternalDirectoryPath}/data.txt`;
@@ -144,12 +148,19 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10,
   },
+  cardImageContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   cardImage: {
-    alignSelf: 'center',
     height: 200,
     width: 200,
   },
   cardBodyTextContainer: {
     paddingTop: 10
-  }
+  },
+  modalImage: {    
+    width: '100%',
+    height: '100%',
+  },
 })
