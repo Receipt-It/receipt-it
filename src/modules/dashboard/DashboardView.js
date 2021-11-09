@@ -16,19 +16,19 @@ import { Text } from '../../components/StyledText';
 
 export default function DashboardScreen(props) {
 
-  const [Grocery, setGrocery] = useState(["Grocery", determineTotal(Object.values(props.receipts), "grocery")]);
+  const [Grocery, setGrocery] = useState(["Grocery", determineTotal(Object.values(props.receipts), "Grocery")]);
 
-  const [Food, setFood] = useState(["Food", determineTotal(Object.values(props.receipts), "food")]);
+  const [Food, setFood] = useState(["Food", determineTotal(Object.values(props.receipts), "Food")]);
 
-  const [Clothes, setClothes] = useState(["Clothes", determineTotal(Object.values(props.receipts), "clothes")]);
+  const [Clothes, setClothes] = useState(["Clothes", determineTotal(Object.values(props.receipts), "Clothes")]);
 
   const [TotalExpenses, setTotalExpenses] = useState(determineTotalCost(Object.values(props.receipts)));
 
-  const [ClothesPercentage, setClothesPercentage] = useState(determinePercentage(Object.values(props.receipts), "clothes", determineClothes(Object.values(props.budget))));
+  const [ClothesPercentage, setClothesPercentage] = useState(determinePercentage(Object.values(props.receipts), "Clothes", determineClothes(Object.values(props.budget))));
 
-  const [FoodPercentage, setFoodPercentage] = useState(determinePercentage(Object.values(props.receipts), "food", determineFood(Object.values(props.budget))));
+  const [FoodPercentage, setFoodPercentage] = useState(determinePercentage(Object.values(props.receipts), "Food", determineFood(Object.values(props.budget))));
 
-  const [GroceryPercentage, setGroceryPercentage] = useState(determinePercentage(Object.values(props.receipts), "grocery", determineGrocery(Object.values(props.budget))));
+  const [GroceryPercentage, setGroceryPercentage] = useState(determinePercentage(Object.values(props.receipts), "Grocery", determineGrocery(Object.values(props.budget))));
 
   const [didRefresh, setDidRefresh] = useState(false);
 
