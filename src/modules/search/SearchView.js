@@ -73,6 +73,9 @@ export default function SearchScreen(props) {
 
   React.useEffect(() => {
     let filteredResults = Object.values(props.receipts);
+    console.log(date == "");
+    console.log(search == "");
+    console.log(category == "");
     console.log(filteredResults);
     if (date !== "") {
                 filteredResults = filteredResults.filter(result => dayjs(result.date).format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY'));
@@ -191,6 +194,7 @@ export default function SearchScreen(props) {
                       </View>
                       </View>
         <View style={styles.sectionLarge}>
+        { (search != "" || category != "" || date != "") ? (
         <View>
                    {searchResults.map((results) => {
                                   const date = new Date(results.date);
@@ -232,6 +236,7 @@ export default function SearchScreen(props) {
                     })
                    }
         </View>
+        ) : <Text></Text>}
         </View>
     </View>
     </ScrollView>
@@ -239,14 +244,15 @@ export default function SearchScreen(props) {
 }
 
 const dropdownItems = [
-    {key: 1, label: 'Grocery', value: 'grocery'},
-    {key: 2, label: 'Food', value: 'food'},
-    {key: 3, label: 'Clothes', value: 'clothes'},
-    {key: 4, label: 'None', value: 'none'},
+    {key: 1, label: 'Grocery', value: 'Grocery'},
+    {key: 2, label: 'Food', value: 'Food'},
+    {key: 3, label: 'Clothes', value: 'Clothes'},
+    {key: 4, label: 'None', value: 'None'},
 ]
 
 const styles = StyleSheet.create({
   cardContainer: {
+    backgroundColor: 'white',
     margin: 20,
     padding: 10,
     borderColor: '#e3dfe0',

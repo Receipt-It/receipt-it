@@ -95,12 +95,12 @@ export default function DashboardScreen(props) {
   }
 
   React.useEffect(() => {
-        setClothes(["Clothes", determineTotal(Object.values(props.receipts), "clothes")]);
-        setGrocery(["Grocery", determineTotal(Object.values(props.receipts), "grocery")]);
-        setFood(["Food", determineTotal(Object.values(props.receipts), "food")]);
-        setClothesPercentage(determinePercentage(Object.values(props.receipts), "clothes", determineClothes(Object.values(props.budget))));
-        setGroceryPercentage(determinePercentage(Object.values(props.receipts), "grocery", determineGrocery(Object.values(props.budget))));
-        setFoodPercentage(determinePercentage(Object.values(props.receipts), "food", determineFood(Object.values(props.budget))));
+        setClothes(["Clothes", determineTotal(Object.values(props.receipts), "Clothes")]);
+        setGrocery(["Grocery", determineTotal(Object.values(props.receipts), "Grocery")]);
+        setFood(["Food", determineTotal(Object.values(props.receipts), "Food")]);
+        setClothesPercentage(determinePercentage(Object.values(props.receipts), "Clothes", determineClothes(Object.values(props.budget))));
+        setGroceryPercentage(determinePercentage(Object.values(props.receipts), "Grocery", determineGrocery(Object.values(props.budget))));
+        setFoodPercentage(determinePercentage(Object.values(props.receipts), "Food", determineFood(Object.values(props.budget))));
         setTotalExpenses(determineTotalCost(Object.values(props.receipts)))
     }, [didRefresh])
 
