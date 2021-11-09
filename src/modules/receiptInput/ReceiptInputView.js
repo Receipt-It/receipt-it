@@ -3,23 +3,25 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import RNFS from 'react-native-fs';
 import Permissions from 'react-native-permissions';
-import { Text, View, ScrollView, TextInput, Button,  StyleSheet, TouchableOpacity, Alert } from "react-native";
-import { Icon, Image } from 'react-native-elements';
+import { Text, View, ScrollView, TextInput, Button,  StyleSheet, Alert } from "react-native";
+import { Image } from 'react-native-elements';
 import { useForm, Controller } from "react-hook-form";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
 import RNDocumentScanner  from "react-native-document-scanner";
 import { colors } from '../../styles';
 
-export default function ReceiptInputScreen() {
+export default function ReceiptInputScreen(props) {
 
   const [calendarShow, setcalendarShow] = useState(false);
   const [scannerShow, setScannerShow] = useState(false);
 
   const scannerRef = useRef(null);
+  
+  const [imagePath, setImagePath] = useState('');
 
-  const [scannerData, setScannerData] = useState({});
   const [scannerAllowed, setScannerAllowed] = useState(false);
+  const [storageAllowed, setStorageAllowed] = useState(false);
 
   const [isCropping, setIsCropping] = useState(false);
 
@@ -29,23 +31,28 @@ export default function ReceiptInputScreen() {
       totalExpenses: "",
       date: new Date(),
       description: "",
-      category: 'grocery'
+      category: 'Grocery'
     }
   });
 
-  const [imagePath, setImagePath] = useState('');
 
   useEffect(() => {
-    async function requestCamera() {
-      const result = await Permissions.request('android.permission.CAMERA');
-      if (result === "granted") setScannerAllowed(true);
+    async function request() {
+      const result = await Permissions.requestMultiple(['android.permission.CAMERA', 'android.permission.READ_EXTERNAL_STORAGE', 'android.permission.WRITE_EXTERNAL_STORAGE']);
+
+      if (result["android.permission.CAMERA"] === "granted") setScannerAllowed(true);
+      if (result["android.permission.READ_EXTERNAL_STORAGE"] ==='granted' && result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted') setStorageAllowed(true);
     }
-    requestCamera();
+    request();
   }, []);
 
   const openScanner = () => {
-    setScannerShow(!scannerShow);
-    setIsCropping(false);
+    if (scannerAllowed) {
+      setScannerShow(!scannerShow);
+      setIsCropping(false);
+    } else {
+      Alert.alert("Permission Denied", "Please allow camera permissions.", [{ text: "OK" }], {cancelable: true});
+    }
   };
 
   const onCropImage = () => {
@@ -54,59 +61,85 @@ export default function ReceiptInputScreen() {
         setImagePath(imageUri.image);
         setScannerShow(!scannerShow);
         setIsCropping(false);
+
+        Alert.alert("Added image", "Successfully added image", [{ text: "OK" }], {cancelable: true});
       });
   }
 
-  const onSubmit = async data => {    
-    const newId = uuidv4();
+  const onSubmit = async data => {
 
-    // try to read the current data file
-    RNFS.readFile(path, 'utf8')
-      // add the new data 
-      .then((currentData) => {
-        const parsedData = JSON.parse(currentData);
+    if (storageAllowed) {
+      const newId = uuidv4();
 
-        parsedData[newId] = data;
-        parsedData[newId].imagePath = `${RNFS.ExternalDirectoryPath}/${newId}.png`;
+      // try to read the current data file
+      RNFS.readFile(path, 'utf8')
+        // add the new data 
+        .then((currentData) => {
+          const parsedData = JSON.parse(currentData);
 
-        RNFS.writeFile(path, JSON.stringify(parsedData), 'utf8');
-        Alert.alert("Added Receipt", "Successfully added receipt", [{ text: "OK" }], {
-                                cancelable: true,
-                });
-        RNFS.moveFile(imagePath, parsedData[newId].imagePath);
+          parsedData[newId] = data;
 
-        // reset form 
-        reset({
-          companyName: "",
-          totalExpenses: "",
-          date: new Date(),
-          description: "",
-          category: 'grocery'
-        });
-        setImagePath('');
-      })
-      // if file does not exist then write the first entry
-      .catch(() => {
+          if (imagePath !== '') {
+            parsedData[newId].imagePath = `${RNFS.ExternalDirectoryPath}/${newId}.png`;
+            RNFS.moveFile(imagePath, parsedData[newId].imagePath);
+          } else {
 
-        const dataJson = { [newId]: data };
-        dataJson[newId].imagePath = `${RNFS.ExternalDirectoryPath}/${newId}.png`;
+            parsedData[newId].imagePath = '';
+          }
 
-        RNFS.writeFile(path, JSON.stringify(dataJson), 'utf8');
-        Alert.alert("Added Receipt", "Successfully added receipt", [{ text: "OK" }], {
-                                cancelable: true,
-                });
-        RNFS.moveFile(imagePath, dataJson[newId].imagePath);
+          RNFS.writeFile(path, JSON.stringify(parsedData), 'utf8');
 
-        // reset form 
-        reset({
-          companyName: "",
-          totalExpenses: "",
-          date: new Date(),
-          description: "",
-          category: 'grocery'
-        });
-        setImagePath('');
-      })
+          Alert.alert("Added Receipt", "Successfully added receipt", [{ text: "OK" }], {cancelable: true});
+
+          // refresh the history page
+          props.refreshReceipts();
+
+          // reset form 
+          reset({
+            companyName: "",
+            totalExpenses: "",
+            date: new Date(),
+            description: "",
+            category: 'grocery'
+          });
+
+          setImagePath('');
+        })
+        // if file does not exist then write the first entry
+        .catch(() => {
+
+          const dataJson = { [newId]: data };
+
+          if (imagePath !== '') {
+            dataJson[newId].imagePath = `${RNFS.ExternalDirectoryPath}/${newId}.png`;
+            RNFS.moveFile(imagePath, dataJson[newId].imagePath);
+          } else {
+            dataJson[newId].imagePath = '';
+          }
+
+          RNFS.writeFile(path, JSON.stringify(dataJson), 'utf8');
+
+
+          Alert.alert("Added Receipt", "Successfully added receipt", [{ text: "OK" }], {cancelable: true});
+
+          // refresh the history page
+          props.refreshReceipts();
+
+          // reset form 
+          reset({
+            companyName: "",
+            totalExpenses: "",
+            date: new Date(),
+            description: "",
+            category: 'grocery'
+          });
+
+          setImagePath('');
+        })
+    } else {
+
+      Alert.alert("Permission Denied", "Please allow storage permissions.", [{ text: "OK" }], {cancelable: true});
+    }
   };
 
   return (
@@ -126,30 +159,30 @@ export default function ReceiptInputScreen() {
         ) : (
           <ScrollView style={formStyles.container}>
             <View style={formStyles.card}>
-            <View>
-              <Text style={formStyles.receiptTitle}>INPUT NEW RECEIPT</Text>
-              <Text style={formStyles.label}>Company Name</Text>
-              <Controller
-                control={control}
-                render={({field: { onChange, onBlur, value }}) => (
-                  <TextInput
-                    style={formStyles.input}
-                    onBlur={onBlur}
-                    onChangeText={input => onChange(input)}
-                    value={value}
-                  />
-              )}
-                name="companyName"
-                rules={{ required: true }}
-              />
-            </View>
-            <View style={formStyles.row}>
-              <View style={formStyles.date}>
-                <Text style={formStyles.label}>Date</Text>
-                <Button color= '#f8a494' onPress={() => setcalendarShow(!calendarShow)} title={`${getValues("date").toDateString()}`} />
+              <View>
+                <Text style={formStyles.receiptTitle}>INPUT NEW RECEIPT</Text>
+                <Text style={formStyles.label}>Company Name</Text>
                 <Controller
                   control={control}
-                  render={({field: { onChange, value }}) => (
+                  render={({field: { onChange, onBlur, value }}) => (
+                    <TextInput
+                      style={formStyles.input}
+                      onBlur={onBlur}
+                      onChangeText={input => onChange(input)}
+                      value={value}
+                    />
+              )}
+                  name="companyName"
+                  rules={{ required: true }}
+                />
+              </View>
+              <View style={formStyles.row}>
+                <View style={formStyles.date}>
+                  <Text style={formStyles.label}>Date</Text>
+                  <Button color='#f8a494' onPress={() => setcalendarShow(!calendarShow)} title={`${getValues("date").toDateString()}`} />
+                  <Controller
+                    control={control}
+                    render={({field: { onChange, value }}) => (
                   calendarShow && (
                   <DateTimePicker 
                     value={value}
@@ -160,66 +193,66 @@ export default function ReceiptInputScreen() {
                     }}
                   />
                 ))}
-                  name="date"
+                    name="date"
+                    rules={{ required: true }}
+                  />
+                </View>
+                <View style={formStyles.expenses}>
+                  <Text style={formStyles.label}>Total Expenses</Text>
+                  <Controller
+                    control={control}
+                    render={({field: { onChange, onBlur, value }}) => (
+                      <TextInput
+                        style={formStyles.input}
+                        onBlur={onBlur}
+                        keyboardType="numeric"
+                        onChangeText={input => onChange(input)}
+                        value={value}
+                      />
+              )}
+                    name="totalExpenses"
+                    rules={{ required: true }}
+                  />
+                </View>
+              </View>
+              <View>
+                <Text style={formStyles.label}>Category</Text>
+                <Controller
+                  control={control}
+                  render={({field: { onChange, value }}) => (
+                    <Picker
+                      style={formStyles.picker}
+                      selectedValue={value}
+                      onValueChange={(itemValue) => onChange(itemValue)}
+                    >
+                      {
+                      dropdownItems.map(item => <Picker.Item key={item.key} label={item.label} value={item.value} />)
+                    }
+                    </Picker>
+            )}
+                  name="category"
                   rules={{ required: true }}
                 />
               </View>
-              <View style={formStyles.expenses}>
-                <Text style={formStyles.label}>Total Expenses</Text>
+              <View>
+                <Text style={formStyles.label}>Description</Text>
                 <Controller
                   control={control}
                   render={({field: { onChange, onBlur, value }}) => (
                     <TextInput
-                      style={formStyles.input}
+                      style={formStyles.description}
+                      multiline
+                      textAlignVertical="top"
                       onBlur={onBlur}
-                      keyboardType="numeric"
                       onChangeText={input => onChange(input)}
                       value={value}
                     />
               )}
-                  name="totalExpenses"
+                  name="description"
                   rules={{ required: true }}
                 />
               </View>
-            </View>
-            <View>
-              <Text style={formStyles.label}>Category</Text>
-              <Controller
-                control={control}
-                render={({field: { onChange, value }}) => (
-                  <Picker
-                    style={formStyles.picker}
-                    selectedValue={value}
-                    onValueChange={(itemValue) => onChange(itemValue)}
-                  >
-                    {
-                      dropdownItems.map(item => <Picker.Item key={item.key} label={item.label} value={item.value} />)
-                    }
-                  </Picker>
-            )}
-                name="category"
-                rules={{ required: true }}
-              />
-            </View>
-            <View>
-              <Text style={formStyles.label}>Description</Text>
-              <Controller
-                control={control}
-                render={({field: { onChange, onBlur, value }}) => (
-                  <TextInput
-                    style={formStyles.description}
-                    multiline
-                    textAlignVertical="top"
-                    onBlur={onBlur}
-                    onChangeText={input => onChange(input)}
-                    value={value}
-                  />
-              )}
-                name="description"
-                rules={{ required: true }}
-              />
-            </View>
-            {
+              {
               imagePath !== '' ? (
                 <View style={formStyles.imageContainer}>
                   <Image
@@ -232,16 +265,16 @@ export default function ReceiptInputScreen() {
                 <View />
               )
             }
-            <View style={formStyles.button}>
-              <Button color='#A3B2B1' title="Scan receipt" onPress={openScanner} />
-            </View>
-            <View style={formStyles.button}>
-              <Button
-                color="#03989E"
-                title="Submit"
-                onPress={handleSubmit(onSubmit)}
-              />
-            </View>
+              <View style={formStyles.button}>
+                <Button color='#A3B2B1' title="Scan receipt" onPress={openScanner} />
+              </View>
+              <View style={formStyles.button}>
+                <Button
+                  color="#03989E"
+                  title="Submit"
+                  onPress={handleSubmit(onSubmit)}
+                />
+              </View>
             </View>
           </ScrollView>
         )}
@@ -272,9 +305,9 @@ export default function ReceiptInputScreen() {
 const path = `${RNFS.ExternalDirectoryPath}/data.txt`;
 
 const dropdownItems = [
-  {key: 1, label: 'Grocery', value: 'grocery'},
-  {key: 2, label: 'Food', value: 'food'},
-  {key: 3, label: 'Clothes', value: 'clothes'},
+  {key: 1, label: 'Grocery', value: 'Grocery'},
+  {key: 2, label: 'Food', value: 'Food'},
+  {key: 3, label: 'Clothes', value: 'Clothes'},
 ]
 
 const scannerStyles = StyleSheet.create({
@@ -301,8 +334,8 @@ const scannerStyles = StyleSheet.create({
 const formStyles = StyleSheet.create({
   receiptTitle: {
     fontSize: 20,
-    //alignItems: 'center',
-    //justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     paddingBottom: 20,
     backgroundColor: "#F19820",
     color: 'white',
