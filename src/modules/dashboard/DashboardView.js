@@ -30,6 +30,12 @@ export default function DashboardScreen(props) {
 
   const [GroceryPercentage, setGroceryPercentage] = useState(determinePercentage(Object.values(props.receipts), "Grocery", determineGrocery(Object.values(props.budget))));
 
+  const [GroceryLeft, setGroceryLeft] = useState([determineLeft(determineGrocery(Object.values(props.budget)),determineTotal(Object.values(props.receipts), "Grocery")), determineLeftBar(determineGrocery(Object.values(props.budget)),determineTotal(Object.values(props.receipts), "Grocery"))]);
+
+  const [FoodLeft, setFoodLeft] = useState([determineLeft(determineFood(Object.values(props.budget)),determineTotal(Object.values(props.receipts), "Food")), determineLeftBar(determineFood(Object.values(props.budget)),determineTotal(Object.values(props.receipts), "Food"))]);
+
+  const [ClothesLeft, setClothesLeft] = useState([determineLeft(determineClothes(Object.values(props.budget)),determineTotal(Object.values(props.receipts), "Clothes")), determineLeftBar(determineClothes(Object.values(props.budget)),determineTotal(Object.values(props.receipts), "Clothes"))]);
+
   const [didRefresh, setDidRefresh] = useState(false);
 
   const [visible, setVisible] = useState(true);
@@ -37,6 +43,17 @@ export default function DashboardScreen(props) {
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+
+  function determineLeft(budget, expense) {
+    return budget - expense;
+  }
+
+  function determineLeftBar(budget, expense) {
+      if ((budget - expense) > 0) {
+        return budget - expense;
+      }
+      return 0;
+  }
 
   function determinePercentage(data, category, budgetValue) {
     const total = determineTotal(data, category);
@@ -101,6 +118,9 @@ export default function DashboardScreen(props) {
   }
 
   React.useEffect(() => {
+        setGroceryLeft([determineLeft(determineGrocery(Object.values(props.budget)),determineTotal(Object.values(props.receipts), "Grocery")), determineLeftBar(determineGrocery(Object.values(props.budget)),determineTotal(Object.values(props.receipts), "Grocery"))]);
+        setFoodLeft([determineLeft(determineFood(Object.values(props.budget)),determineTotal(Object.values(props.receipts), "Food")), determineLeftBar(determineFood(Object.values(props.budget)),determineTotal(Object.values(props.receipts), "Food"))]);
+        setClothesLeft([determineLeft(determineClothes(Object.values(props.budget)),determineTotal(Object.values(props.receipts), "Clothes")), determineLeftBar(determineClothes(Object.values(props.budget)),determineTotal(Object.values(props.receipts), "Clothes"))]);
         setClothes(["Clothes", determineTotal(Object.values(props.receipts), "Clothes")]);
         setGrocery(["Grocery", determineTotal(Object.values(props.receipts), "Grocery")]);
         setFood(["Food", determineTotal(Object.values(props.receipts), "Food")]);
@@ -206,7 +226,7 @@ export default function DashboardScreen(props) {
                                 : x === "c" ? "#faf3f0"
                                 : "#EDCFC5"
                             }}}
-                        data={[{x: "a", y: 20}, {x: "b", y: 30}, {x: "c", y: 5}]} />
+                        data={[{x: "a", y: GroceryLeft[1]}, {x: "b", y: FoodLeft[1]}, {x: "c", y: ClothesLeft[1]}]} />
                   </VictoryStack>
                   <Text size={20} style={styles.titleBar}>Budgeted amount left</Text>
                   <View style={styles.row}>
@@ -218,11 +238,31 @@ export default function DashboardScreen(props) {
                     gutter={20}
                     //rowGutter={{ top: 0, bottom: 3 }}
                     data={[
-                        { name: `${Grocery[0]} $${Grocery[1]}`, symbol: { fill: "#F19820" }, labels: { fill: "black" }  },
-                        { name: `${Food[0]} $${Food[1]}`, symbol: { fill: "#03989E" }, labels: { fill: "black" }  },
-                        { name: `${Clothes[0]} $${Clothes[1]}`, symbol: { fill: "#EDCFC5" }, labels: { fill: "black" }  }
+                        { name: `${Grocery[0]} $${GroceryLeft[0]}`, symbol: { fill: "#F19820" }, labels: { fill: "black" }  },
+                        { name: `${Food[0]} $${FoodLeft[0]}`, symbol: { fill: "#03989E" }, labels: { fill: "black" }  },
+                        { name: `${Clothes[0]} $${ClothesLeft[0]}`, symbol: { fill: "#EDCFC5" }, labels: { fill: "black" }  }
                       ]}
                   />
+                  </View>
+                  <View style={styles.legendText}>
+                  {
+                    GroceryLeft[0] < 0 ? (
+                    <Text style={styles.legendBar}>Overbudget!</Text>
+                    ) : (
+                    <Text style={{ color: 'white', marginTop: 10 }}>Overbudget!</Text>
+                  )}
+                  {
+                    FoodLeft[0] < 0 ? (
+                    <Text style={styles.legendBar}>Overbudget!</Text>
+                    ) : (
+                    <Text style={{ color: 'white', marginTop: 10 }}>Overbudget!</Text>
+                  )}
+                  {
+                    ClothesLeft[0] < 0 ? (
+                    <Text style={styles.legendBar}>Overbudget!</Text>
+                    ) : (
+                    <Text style={{ color: 'white', marginTop: 10 }}>Overbudget!</Text>
+                  )}
                   </View>
                   </View>
          </View>
@@ -332,8 +372,17 @@ const styles = StyleSheet.create({
     marginTop: 170,
     color: 'black',
   },
+  legendText: {
+    marginTop: 20,
+    flex: 1,
+  },
   titleBar: {
     color: 'black',
+    marginTop: 10,
+  },
+  legendBar: {
+      color: 'red',
+      marginTop: 10,
   },
   price: {
     marginBottom: 5,
