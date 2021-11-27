@@ -47,7 +47,7 @@ export default function BudgetInputScreen(props) {
 
         const dataJson = { [newId]: data };
         RNFS.writeFile(path, JSON.stringify(dataJson), 'utf8');
-                Alert.alert("Added Receipt", "Successfully added receipt", [{ text: "OK" }], {
+                Alert.alert("Budget Updated", "Successfully updated budget", [{ text: "OK" }], {
                                         cancelable: true,
                         });
       })
@@ -76,7 +76,7 @@ export default function BudgetInputScreen(props) {
                 onBlur={onBlur}
                 keyboardType="numeric"
                 onChangeText={input => onChange(input)}
-                value={value}
+                value={value.toString()}
               />
           )}
             name="clothes"
@@ -97,7 +97,7 @@ export default function BudgetInputScreen(props) {
                       onBlur={onBlur}
                       keyboardType="numeric"
                       onChangeText={input => onChange(input)}
-                      value={value}
+                      value={value.toString()}
                     />
                 )}
                   name="food"
@@ -118,7 +118,7 @@ export default function BudgetInputScreen(props) {
                             onBlur={onBlur}
                             keyboardType="numeric"
                             onChangeText={input => onChange(input)}
-                            value={value}
+                            value={value.toString()}
                           />
                       )}
                         name="grocery"
