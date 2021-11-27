@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { VictoryPie, VictoryLegend } from 'victory-native';
+import { VictoryPie, VictoryBar, VictoryStack, VictoryLegend } from 'victory-native';
 import {
   StyleSheet,
   View,
@@ -10,7 +10,7 @@ import {
   Dimensions
 } from 'react-native';
 import {ProgressBar} from '@react-native-community/progress-bar-android';
-import { Card } from 'react-native-elements';
+import { Card, Overlay } from 'react-native-elements';
 import { fonts, colors } from '../../styles';
 import { Text } from '../../components/StyledText';
 
@@ -31,6 +31,12 @@ export default function DashboardScreen(props) {
   const [GroceryPercentage, setGroceryPercentage] = useState(determinePercentage(Object.values(props.receipts), "Grocery", determineGrocery(Object.values(props.budget))));
 
   const [didRefresh, setDidRefresh] = useState(false);
+
+  const [visible, setVisible] = useState(true);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   function determinePercentage(data, category, budgetValue) {
     const total = determineTotal(data, category);
@@ -115,6 +121,9 @@ export default function DashboardScreen(props) {
         />}
         >
         <View style={styles.section}>
+        <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={styles.overlayS}>
+            <Text>Pull down from the top to update data</Text>
+        </Overlay>
         <Text size={25} style={styles.dTitle}>EXPENSE DASHBOARD</Text>
         <Text size={30} bold black style={styles.dashboardTitle}>${TotalExpenses}</Text>
         <Text style={styles.dashboardSubTitle}>Total Expenses</Text>
@@ -176,12 +185,56 @@ export default function DashboardScreen(props) {
                   </View>
                   </View>
          </View>
+
+        <View style={styles.descriptionBar}>
+                  <Text size={20} style={styles.title}>
+                    Expenses vs. Budget
+                  </Text>
+                  <VictoryStack domainPadding={70}>
+                        <VictoryBar
+                            style={{ data: {fill: ({ x }) =>
+                                x === "a" ? "#F19820"
+                                : x === "b" ? "#03989E"
+                                : x === "c" ? "#EDCFC5"
+                                : "#EDCFC5"
+                            }}}
+                            data={[{x: "a", y: Grocery[1]}, {x: "b", y: Food[1]}, {x: "c", y: Clothes[1]}]} />
+                        <VictoryBar
+                            style={{ data: {fill: ({ x }) =>
+                                x === "a" ? "#f5c385"
+                                : x === "b" ? "#bee4e6"
+                                : x === "c" ? "#faf3f0"
+                                : "#EDCFC5"
+                            }}}
+                        data={[{x: "a", y: 20}, {x: "b", y: 30}, {x: "c", y: 5}]} />
+                  </VictoryStack>
+                  <Text size={20} style={styles.titleBar}>Budgeted amount left</Text>
+                  <View style={styles.row}>
+                  <View style={styles.rowItem}>
+                  <VictoryLegend x={25} y={25}
+                    disableInlineStyles
+                    padding={{top: 0, bottom: 0, right: 20, left: 20}}
+                    orientation="vertical"
+                    gutter={20}
+                    //rowGutter={{ top: 0, bottom: 3 }}
+                    data={[
+                        { name: `${Grocery[0]} $${Grocery[1]}`, symbol: { fill: "#F19820" }, labels: { fill: "black" }  },
+                        { name: `${Food[0]} $${Food[1]}`, symbol: { fill: "#03989E" }, labels: { fill: "black" }  },
+                        { name: `${Clothes[0]} $${Clothes[1]}`, symbol: { fill: "#EDCFC5" }, labels: { fill: "black" }  }
+                      ]}
+                  />
+                  </View>
+                  </View>
+         </View>
     </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  overlayS: {
+    bottom: 160,
+  },
   dTitle: {
   fontSize: 20,
   //alignItems: 'center',
@@ -239,6 +292,24 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     width: '90%',
     height: 200,
+    marginBottom: 50,
+  },
+  descriptionBar: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: -30,
+    elevation: 20,
+    shadowColor: '#52006A',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    //paddingVertical: 20,
+    paddingHorizontal: 15,
+    marginVertical: 10,
+    marginHorizontal: 20,
+    width: '90%',
+    height: 600,
+    marginBottom: 50,
   },
   titleDescription: {
     textAlign: 'center',
@@ -259,6 +330,9 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 170,
+    color: 'black',
+  },
+  titleBar: {
     color: 'black',
   },
   price: {
