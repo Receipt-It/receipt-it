@@ -7,7 +7,8 @@ import {
   ImageBackground,
   ScrollView,
   RefreshControl,
-  Dimensions
+  Dimensions,
+  Image
 } from 'react-native';
 import {ProgressBar} from '@react-native-community/progress-bar-android';
 import { Card, Overlay } from 'react-native-elements';
@@ -266,6 +267,41 @@ export default function DashboardScreen(props) {
                   </View>
                   </View>
          </View>
+        <View style={styles.descriptionS}>
+                  <Text size={20} style={styles.suggestTitle}>
+                    Budget Suggestions
+                  </Text>
+                  <View style={styles.row}>
+                  <View style={styles.rowItem}>
+                        <View style={styles.iconPadding}>
+                            <Image source={require('../../../assets/images/currency.png')}/>
+                        </View>
+                        <View style={styles.iconPadding}>
+                            <Image source={require('../../../assets/images/check-circle-outline.png')}/>
+                        </View>
+                        <View style={styles.iconPadding}>
+                            <Image source={require('../../../assets/images/check-circle-outline.png')}/>
+                        </View>
+                        <View style={styles.iconPadding}>
+                            <Image source={require('../../../assets/images/check-circle-outline.png')}/>
+                        </View>
+                  </View>
+                  <View style={styles.rowDesc}>
+                        <View style={{ paddingBottom: 30}}>
+                            <Text style={{ color: 'black' }}>{"We noticed that you've been spending a lot of money on "}<Text style={{ color: '#f8a494' }}>{"Clothes"}</Text>{" recently, especially at"}<Text style={{ color: 'black', fontStyle: 'italic'}}>{" Nordstrom."}</Text>{" Here are some tips to cut back:"}</Text>
+                        </View>
+                        <View style={styles.iconPadding}>
+                            <Text style={{ color: 'black' }}>{"Try shopping at a cheaper store than "}<Text style={{ fontStyle: 'italic'}}>{"Nordstrom"}</Text>{". We found cheaper options like "}<Text style={{ fontStyle: 'italic' }}>{"Macy's"}</Text>{" and "}<Text style={{ fontStyle: 'italic' }}>{"TJ Maxx."}</Text></Text>
+                        </View>
+                        <View style={{ paddingBottom: 60}}>
+                            <Text style={{ color: 'black' }}>{"Try to keep within a weekly budget of $50 for "}<Text style={{ color: '#f8a494' }}>{"Clothes"}</Text></Text>
+                        </View>
+                        <View>
+                            <Text style={{ color: 'black' }}>{"You've been going underbudget for "}<Text style={{ color: "#03989E" }}>{"Food"}</Text>{". How about increasing your budget for "}<Text style={{ color: '#f8a494' }}>{"Clothes"}</Text>{" and reducing your budget for "}<Text style={{ color: "#03989E" }}>{"Food?"}</Text></Text>
+                        </View>
+                  </View>
+                  </View>
+         </View>
     </ScrollView>
     </View>
   );
@@ -351,6 +387,23 @@ const styles = StyleSheet.create({
     height: 600,
     marginBottom: 50,
   },
+    descriptionS: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: -30,
+      elevation: 20,
+      shadowColor: '#52006A',
+      backgroundColor: 'white',
+      borderRadius: 8,
+      //paddingVertical: 20,
+      paddingHorizontal: 15,
+      marginVertical: 10,
+      marginHorizontal: 20,
+      width: '90%',
+      height: 500,
+      marginBottom: 50,
+    },
   titleDescription: {
     textAlign: 'center',
     fontFamily: fonts.primaryRegular,
@@ -397,11 +450,24 @@ const styles = StyleSheet.create({
   rowItem: {
     flex: 1,
   },
+    rowIcon: {
+      flex: 1,
+    },
+      rowDesc: {
+        flex: 3,
+      },
+  iconPadding: {
+    paddingBottom: 50,
+  },
   pBarStyle: {
     marginTop: 30,
     flex: 1,
   },
   pBarItem: {
     marginTop: 18,
-  }
+  },
+    suggestTitle: {
+      paddingBottom: 10,
+      color: 'black',
+    },
 });
