@@ -22,13 +22,6 @@ export default function NavigatorView(props) {
           paddingVertical: 12,
         }}
       >
-        <Image
-          source={require('../../../assets/images/drawer/menu.png')}
-          resizeMode="contain"
-          style={{
-            height: 20,
-          }}
-        />
       </TouchableOpacity>    
     )
   }
